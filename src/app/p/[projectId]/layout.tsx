@@ -23,7 +23,11 @@ export default async function ProjectLayout({ children, params }: { children: Re
       {/* Celular: barra superior */}
       <header className="sticky top-0 z-20 border-b border-line bg-surface/95 backdrop-blur lg:hidden">
         <div className="mx-auto flex min-h-14 max-w-xl items-center gap-3 px-4 py-1.5">
-          <p className="line-clamp-2 min-w-0 flex-1 text-[15px] font-semibold leading-tight tracking-[-0.01em]">{member.project.name}</p>
+          <Link href={`/p/${projectId}`} className="flex min-w-0 flex-1 items-center gap-2.5">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/icon.svg" alt="Obra" className="size-9 shrink-0 rounded-[10px]" />
+            <span className="line-clamp-2 min-w-0 text-[15px] font-semibold leading-tight tracking-[-0.01em]">{member.project.name}</span>
+          </Link>
           {showCash && (
             <Link
               href={`/p/${projectId}/cuentas#caja`}
