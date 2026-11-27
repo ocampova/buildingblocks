@@ -56,7 +56,48 @@ export default async function Accounts({ params }: { params: Promise<{ projectId
         <div className="min-w-0 space-y-6">
           <NettingCard projectId={projectId} partners={rows} debts={debts} viewerMemberId={member.id} compact />
 
-          <Card>
+          {/* Celular: un bloque por concepto, montos debajo */}
+          <Card className="sm:hidden">
+            <ul className="divide-y divide-line">
+              {(
+                [
+                  ["Pagos directos", rows.map((r) => r.direct), false],
+                  ["Depósitos a la caja", rows.map((r) => r.deposited), false],
+                  ["Liquidaciones", rows.map((r) => r.settled), false],
+                  ["Total puesto", rows.map((r) => r.contributed), true],
+                  ["Le toca según su porcentaje", rows.map((r) => r.owed), false],
+                ] as [string, number[], boolean][]
+              ).map(([label, values, strong]) => (
+                <li key={label} className={cx("px-4 py-3", strong && "bg-sunken/50")}>
+                  <p className={cx("text-[13.5px]", strong ? "font-semibold text-ink" : "text-ink-2")}>{label}</p>
+                  <div className="mt-1 grid grid-cols-2 gap-3">
+                    {values.map((v, i) => (
+                      <p key={rows[i].id} className="flex items-center gap-2">
+                        <PayerChip name={rows[i].name} color={rows[i].color} size="sm" />
+                        <span className={cx("tnum text-[15px]", strong && "font-semibold")}>{crc(v)}</span>
+                      </p>
+                    ))}
+                  </div>
+                </li>
+              ))}
+              <li className="px-4 py-3">
+                <p className="text-[13.5px] font-semibold">Diferencia</p>
+                <div className="mt-1 grid grid-cols-2 gap-3">
+                  {rows.map((r) => (
+                    <p key={r.id} className="flex items-center gap-2">
+                      <PayerChip name={r.name} color={r.color} size="sm" />
+                      <span className={cx("tnum text-[15px] font-semibold", r.balance > 0 ? "text-ok" : r.balance < 0 ? "text-danger" : "text-ink-2")}>
+                        {r.balance > 0 ? "+" : ""}
+                        {crc(r.balance)}
+                      </span>
+                    </p>
+                  ))}
+                </div>
+              </li>
+            </ul>
+          </Card>
+
+          <Card className="hidden sm:block">
             <table className="w-full text-[14.5px]">
               <caption className="sr-only">Lo que ha puesto cada socio</caption>
               <thead>
@@ -99,7 +140,7 @@ export default async function Accounts({ params }: { params: Promise<{ projectId
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <h2 className={cx("text-[15px] font-semibold", cashLow ? "text-warn" : "text-caja")}>Caja chica</h2>
-                  <p className="tnum mt-1 text-[34px] font-semibold leading-none tracking-[-0.02em]">{crc(ledger.cash.balance)}</p>
+                  <p className="font-figure mt-1 text-[34px] font-semibold leading-none">{crc(ledger.cash.balance)}</p>
                 </div>
                 <PayerChip name="Caja" color="caja" size="lg" />
               </div>

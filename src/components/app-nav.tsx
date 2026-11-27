@@ -26,8 +26,7 @@ export function AppNav({ projectId, projectName, role, userName }: { projectId: 
       {/* Computadora: riel lateral */}
       <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r border-line bg-surface lg:flex">
         <div className="px-5 pb-4 pt-6">
-          <p className="text-[13px] font-semibold text-brand">Obra</p>
-          <p className="mt-0.5 truncate text-[17px] font-semibold tracking-[-0.01em]">{projectName}</p>
+          <p className="text-balance text-[17px] font-semibold leading-snug tracking-[-0.01em]">{projectName}</p>
         </div>
         {money && (
           <div className="px-4 pb-3">

@@ -19,8 +19,8 @@ export default async function ProjectLayout({ children, params }: { children: Re
 
       {/* Celular: barra superior */}
       <header className="sticky top-0 z-20 border-b border-line bg-surface/95 backdrop-blur lg:hidden">
-        <div className="mx-auto flex h-14 max-w-xl items-center gap-3 px-4">
-          <p className="min-w-0 flex-1 truncate text-[16px] font-semibold tracking-[-0.01em]">{member.project.name}</p>
+        <div className="mx-auto flex min-h-14 max-w-xl items-center gap-3 px-4 py-1.5">
+          <p className="line-clamp-2 min-w-0 flex-1 text-[15px] font-semibold leading-tight tracking-[-0.01em]">{member.project.name}</p>
           {showCash && (
             <Link
               href={`/p/${projectId}/cuentas#caja`}
@@ -30,7 +30,8 @@ export default async function ProjectLayout({ children, params }: { children: Re
               )}
             >
               <span aria-hidden className="size-2 rounded-full bg-current" />
-              Caja {crc(cash)}
+              <span className="sr-only">Caja chica:</span>
+              {crc(cash)}
             </Link>
           )}
           <Link href={`/p/${projectId}/ajustes`} aria-label="Ajustes" className="grid size-10 place-items-center rounded-full text-ink-2 hover:bg-sunken">

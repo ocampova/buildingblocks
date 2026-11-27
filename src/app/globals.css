@@ -7,16 +7,18 @@
  */
 @theme {
   --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  /* Cifras con carácter de billete: Archivo ancho, en los montos grandes */
+  --font-figure: var(--font-archivo), var(--font-geist), ui-sans-serif, sans-serif;
 
-  --color-ground: #f2f5f4;
+  --color-ground: #f5f4f0;
   --color-surface: #ffffff;
-  --color-sunken: #e8eeeb;
-  --color-line: #d6dfdb;
-  --color-line-strong: #b9c6c0;
+  --color-sunken: #ecebe5;
+  --color-line: #dddcd4;
+  --color-line-strong: #c3c2b8;
 
   --color-ink: #14201c;
-  --color-ink-2: #4b5a54;
-  --color-ink-3: #5d6c66;
+  --color-ink-2: #4d5550;
+  --color-ink-3: #5f6661;
 
   --color-brand: #173a6e;
   --color-brand-strong: #0f2a52;
@@ -94,7 +96,7 @@
 @media (prefers-reduced-motion: no-preference) {
   .grow-x {
     transform-origin: left center;
-    animation: grow-x 520ms var(--ease-out-expo) both;
+    animation: grow-x 240ms var(--ease-out-expo) both;
   }
   .rise {
     animation: rise 360ms var(--ease-out-expo) both;
@@ -119,8 +121,16 @@
   }
 }
 
+/* Montos grandes: numeral de billete, ancho y firme */
+.font-figure {
+  font-family: var(--font-figure);
+  font-stretch: 118%;
+  font-variant-numeric: tabular-nums lining-nums;
+  letter-spacing: -0.02em;
+}
+
 /* Guilloche de billete, solo en la tarjeta de cuentas */
 .guilloche {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='64' viewBox='0 0 240 64'%3E%3Cg fill='none' stroke='%23173a6e' stroke-opacity='.09' stroke-width='.8'%3E%3Cpath d='M0 32c20-26 40-26 60 0s40 26 60 0 40-26 60 0 40 26 60 0'/%3E%3Cpath d='M0 32c20-18 40-18 60 0s40 18 60 0 40-18 60 0 40 18 60 0'/%3E%3Cpath d='M0 32c20-10 40-10 60 0s40 10 60 0 40-10 60 0 40 10 60 0'/%3E%3Cpath d='M0 32c20 26 40 26 60 0s40-26 60 0 40 26 60 0 40-26 60 0'/%3E%3Cpath d='M0 32c20 18 40 18 60 0s40-18 60 0 40 18 60 0 40-18 60 0'/%3E%3Cpath d='M0 32c20 10 40 10 60 0s40-10 60 0 40 10 60 0 40-10 60 0'/%3E%3C/g%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='64' viewBox='0 0 240 64'%3E%3Cg fill='none' stroke='%23173a6e' stroke-opacity='.14' stroke-width='.8'%3E%3Cpath d='M0 32c20-26 40-26 60 0s40 26 60 0 40-26 60 0 40 26 60 0'/%3E%3Cpath d='M0 32c20-18 40-18 60 0s40 18 60 0 40-18 60 0 40 18 60 0'/%3E%3Cpath d='M0 32c20-10 40-10 60 0s40 10 60 0 40-10 60 0 40 10 60 0'/%3E%3Cpath d='M0 32c20 26 40 26 60 0s40-26 60 0 40 26 60 0 40-26 60 0'/%3E%3Cpath d='M0 32c20 18 40 18 60 0s40-18 60 0 40 18 60 0 40-18 60 0'/%3E%3Cpath d='M0 32c20 10 40 10 60 0s40-10 60 0 40 10 60 0 40-10 60 0'/%3E%3C/g%3E%3C/svg%3E");
   background-size: 240px 64px;
 }

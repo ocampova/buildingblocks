@@ -54,11 +54,11 @@ export default async function ExpenseDetail({ params, searchParams }: { params: 
       )}
 
       <header className="pb-6">
-        <p className="text-[14px] font-medium text-ink-2">
-          {e.stage.name} · {dateLabel(e.date, { day: "numeric", month: "long", year: "numeric" })}
+        <h1 className="text-balance text-[24px] font-semibold leading-tight tracking-[-0.02em] lg:text-[28px]">{e.description}</h1>
+        <p className="mt-1 text-[14.5px] text-ink-2">
+          {e.stage.name}, {dateLabel(e.date, { day: "numeric", month: "long", year: "numeric" })}
         </p>
-        <h1 className="mt-1 text-balance text-[24px] font-semibold leading-tight tracking-[-0.02em] lg:text-[28px]">{e.description}</h1>
-        <p className="tnum mt-3 text-[40px] font-semibold leading-none tracking-[-0.03em]">{crc(e.total)}</p>
+        <p className="font-figure mt-4 text-[40px] font-semibold leading-none">{crc(e.total)}</p>
         <div className="mt-3 flex flex-wrap gap-2">
           {pending === 0 ? <Badge tone="ok">Pagado</Badge> : paid === 0 ? <Badge tone="warn">Por pagar {crc(pending)}</Badge> : <Badge tone="warn">Falta {crc(pending)}</Badge>}
           <Badge tone={e.receiptType === "NINGUNO" ? "danger" : e.receiptType === "FACTURA" ? "brand" : "neutral"}>{RECEIPT[e.receiptType]}</Badge>

@@ -23,7 +23,7 @@ export function noteText(color: number | "caja") {
 
 /** Ficha con la inicial de quien pagó, en el color de su billete. */
 export function PayerChip({ name, color, size = "md" }: { name: string; color: number | "caja"; size?: "sm" | "md" | "lg" }) {
-  const dim = size === "sm" ? "size-6 text-[10px]" : size === "lg" ? "size-10 text-sm" : "size-8 text-xs";
+  const dim = size === "sm" ? "size-7 text-[11.5px]" : size === "lg" ? "size-11 text-[15px]" : "size-9 text-[13px]";
   return (
     <span aria-hidden className={cx("inline-grid shrink-0 place-items-center rounded-full font-semibold tracking-tight text-white", dim, noteBg(color))}>
       {color === "caja" ? "CC" : initials(name)}

@@ -1,10 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Geist } from "next/font/google";
+import { Archivo, Geist } from "next/font/google";
 import "./globals.css";
 import { ServiceWorkerRegister } from "@/components/sw-register";
 
 // Geist: legible al sol y con cifras tabulares para los montos
 const geist = Geist({ subsets: ["latin"], variable: "--font-geist", display: "swap" });
+// Archivo ancho para los montos grandes: numerales firmes, como en un billete
+const archivo = Archivo({ subsets: ["latin"], axes: ["wdth"], variable: "--font-archivo", display: "swap" });
 
 export const metadata: Metadata = {
   title: { default: "Obra", template: "%s · Obra" },
@@ -22,7 +24,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="es-CR" className={geist.variable}>
+    <html lang="es-CR" className={`${geist.variable} ${archivo.variable}`}>
       <body className="min-h-dvh font-sans antialiased">
         {children}
         <ServiceWorkerRegister />

@@ -58,12 +58,29 @@ export default async function Summary({ params }: { params: Promise<{ projectId:
     <div>
       <PageHeader title="Resumen" description="Cuánto se ha gastado por etapa y lo que falta por pagar." />
 
-      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-        <Stat label="Total" value={crc(total)} strong />
-        <Stat label="Obra" value={crc(obra)} />
-        <Stat label="Gastos generales" value={crc(general)} />
-        {money && <Stat label="Por pagar" value={crc(pendingTotal)} tone={pendingTotal > 0 ? "warn" : undefined} />}
-      </div>
+      <Card className="p-5 lg:p-6">
+        <p className="text-[15px] text-ink-2">Llevan gastado</p>
+        <p className="font-figure mt-1 text-[38px] font-semibold leading-none lg:text-[44px]">{crc(total)}</p>
+        <div className="mt-5 flex h-3 w-full overflow-hidden rounded-full bg-sunken" aria-hidden>
+          <div className="grow-x h-full bg-ink" style={{ width: `${total ? (obra / total) * 100 : 0}%` }} />
+          <div className="grow-x h-full border-l-2 border-surface bg-ink/35" style={{ width: `${total ? (general / total) * 100 : 0}%` }} />
+        </div>
+        <dl className="mt-3 grid grid-cols-2 gap-3 text-[14px]">
+          <div>
+            <dt className="flex items-center gap-1.5 text-ink-2"><span className="size-2.5 rounded-full bg-ink" aria-hidden />En la obra</dt>
+            <dd className="tnum mt-0.5 text-[16px] font-semibold">{crc(obra)}</dd>
+          </div>
+          <div>
+            <dt className="flex items-center gap-1.5 text-ink-2"><span className="size-2.5 rounded-full bg-ink/35" aria-hidden />Gastos generales</dt>
+            <dd className="tnum mt-0.5 text-[16px] font-semibold">{crc(general)}</dd>
+          </div>
+        </dl>
+        {money && pendingTotal > 0 && (
+          <p className="mt-4 border-t border-line pt-3 text-[14.5px] text-ink-2">
+            Falta pagar <span className="tnum font-semibold text-warn">{crc(pendingTotal)}</span>.
+          </p>
+        )}
+      </Card>
 
       <SectionTitle>Por etapa</SectionTitle>
       <Card>
@@ -108,7 +125,7 @@ export default async function Summary({ params }: { params: Promise<{ projectId:
       </div>
 
       {money && (
-        <div className="grid gap-6 lg:grid-cols-2 lg:gap-8">
+        <div className="mt-8 grid gap-6 lg:grid-cols-2 lg:gap-8">
           <div>
             <SectionTitle>Por pagar y vencimientos</SectionTitle>
             {upcoming.length === 0 ? (
@@ -141,7 +158,7 @@ export default async function Summary({ params }: { params: Promise<{ projectId:
               <p className="text-[14.5px] text-ink-2">Con factura electrónica</p>
               <p className="tnum mt-1 text-[28px] font-semibold leading-none tracking-[-0.02em]">{total ? Math.round((withInvoice / total) * 100) : 0} %</p>
               <div className="mt-3 h-2.5 w-full overflow-hidden rounded-full bg-sunken" aria-hidden>
-                <div className="grow-x h-full rounded-full bg-note-3" style={{ width: `${total ? (withInvoice / total) * 100 : 0}%` }} />
+                <div className="grow-x h-full rounded-full bg-ink/70" style={{ width: `${total ? (withInvoice / total) * 100 : 0}%` }} />
               </div>
               <p className="mt-3 text-[13.5px] text-ink-2">Las facturas electrónicas respaldan el costo de la obra ante Hacienda si después venden o alquilan. Conviene confirmarlo con un contador.</p>
               {noReceipt.length > 0 && (
@@ -153,15 +170,6 @@ export default async function Summary({ params }: { params: Promise<{ projectId:
           </div>
         </div>
       )}
-    </div>
-  );
-}
-
-function Stat({ label, value, strong, tone }: { label: string; value: string; strong?: boolean; tone?: "warn" }) {
-  return (
-    <div className={cx("rounded-card border p-4", strong ? "border-brand/20 bg-brand-soft/60" : tone === "warn" ? "border-warn/25 bg-warn-soft" : "border-line bg-surface")}>
-      <p className={cx("text-[13.5px] font-semibold", tone === "warn" ? "text-warn" : "text-ink-2")}>{label}</p>
-      <p className="tnum mt-1 truncate text-[22px] font-semibold tracking-[-0.02em] lg:text-[24px]">{value}</p>
     </div>
   );
 }

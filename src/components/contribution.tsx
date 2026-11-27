@@ -64,12 +64,12 @@ export function NettingCard({
       {sentence ? (
         <>
           <p className="text-[15px] font-medium text-ink-2">{sentence.lead}</p>
-          <p className="tnum mt-0.5 text-[40px] font-semibold leading-none tracking-[-0.03em] text-brand-strong lg:text-[44px]">{crc(sentence.amount)}</p>
+          <p className="font-figure mt-1 text-[40px] font-semibold leading-none text-brand-strong lg:text-[46px]">{crc(sentence.amount)}</p>
         </>
       ) : (
         <>
           <p className="text-[15px] font-medium text-ink-2">{total > 0 ? "Las cuentas están" : "Todavía no hay aportes"}</p>
-          <p className="mt-0.5 text-[34px] font-semibold leading-none tracking-[-0.03em] text-brand-strong">{total > 0 ? "Parejas" : "Sin movimientos"}</p>
+          <p className="font-figure mt-1 text-[34px] font-semibold leading-none text-brand-strong">{total > 0 ? "Parejas" : "Sin movimientos"}</p>
         </>
       )}
 
@@ -84,7 +84,7 @@ export function NettingCard({
                   <p className="truncate text-[13.5px] text-ink-2">
                     {firstName(p.name)} · {p.share} %
                   </p>
-                  <p className="tnum text-[15px] font-semibold">{crc(p.contributed)}</p>
+                  <p className="font-figure text-[15.5px] font-semibold">{crc(p.contributed)}</p>
                 </div>
                 {partners.length === 2 && i === 1 && <PayerChip name={p.name} color={p.color} size="sm" />}
               </li>
