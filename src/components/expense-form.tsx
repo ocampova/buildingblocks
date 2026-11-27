@@ -234,7 +234,7 @@ export function ExpenseForm({
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
           {payerOptions.map((o) => (
             <ChoiceButton key={o.value} selected={payer === o.value} onClick={() => setPayer(o.value)} color={o.color}>
-              <PayerChip name={o.chip} color={o.color} size="sm" />
+              <PayerChip name={o.chip} color={o.color} />
               {o.label}
             </ChoiceButton>
           ))}
@@ -242,14 +242,14 @@ export function ExpenseForm({
             <ChoiceButton selected={payer === "mitad"} onClick={() => setPayer("mitad")}>
               <span aria-hidden className="flex -space-x-1.5">
                 {partners.slice(0, 2).map((p) => (
-                  <span key={p.id} className={cx("size-6 rounded-full ring-2 ring-surface", noteBg(p.color))} />
+                  <span key={p.id} className={cx("size-7 rounded-full ring-2 ring-surface", noteBg(p.color))} />
                 ))}
               </span>
               Mitad y mitad
             </ChoiceButton>
           )}
           <ChoiceButton selected={payer === "pendiente"} onClick={() => setPayer("pendiente")}>
-            <span aria-hidden className="size-6 rounded-full border-2 border-dashed border-ink-3" />
+            <span aria-hidden className="size-9 shrink-0 rounded-full border-2 border-dashed border-ink-3" />
             Queda por pagar
           </ChoiceButton>
         </div>

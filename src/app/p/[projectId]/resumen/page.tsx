@@ -59,27 +59,24 @@ export default async function Summary({ params }: { params: Promise<{ projectId:
       <PageHeader title="Resumen" description="Cuánto se ha gastado por etapa y lo que falta por pagar." />
 
       <Card className="p-5 lg:p-6">
-        <p className="text-[15px] text-ink-2">Llevan gastado</p>
-        <p className="font-figure mt-1 text-[38px] font-semibold leading-none lg:text-[44px]">{crc(total)}</p>
+        <p className="max-w-[46ch] text-balance text-[19px] leading-snug text-ink-2 lg:text-[21px]">
+          Llevan <span className="font-figure font-semibold text-ink">{crc(total)}</span>: {crc(obra)} en la obra y {crc(general)} en gastos generales
+          {money && pendingTotal > 0 ? (
+            <>
+              . Falta pagar <span className="font-semibold text-warn">{crc(pendingTotal)}</span>.
+            </>
+          ) : (
+            "."
+          )}
+        </p>
         <div className="mt-5 flex h-3 w-full overflow-hidden rounded-full bg-sunken" aria-hidden>
           <div className="grow-x h-full bg-ink" style={{ width: `${total ? (obra / total) * 100 : 0}%` }} />
           <div className="grow-x h-full border-l-2 border-surface bg-ink/35" style={{ width: `${total ? (general / total) * 100 : 0}%` }} />
         </div>
-        <dl className="mt-3 grid grid-cols-2 gap-3 text-[14px]">
-          <div>
-            <dt className="flex items-center gap-1.5 text-ink-2"><span className="size-2.5 rounded-full bg-ink" aria-hidden />En la obra</dt>
-            <dd className="tnum mt-0.5 text-[16px] font-semibold">{crc(obra)}</dd>
-          </div>
-          <div>
-            <dt className="flex items-center gap-1.5 text-ink-2"><span className="size-2.5 rounded-full bg-ink/35" aria-hidden />Gastos generales</dt>
-            <dd className="tnum mt-0.5 text-[16px] font-semibold">{crc(general)}</dd>
-          </div>
-        </dl>
-        {money && pendingTotal > 0 && (
-          <p className="mt-4 border-t border-line pt-3 text-[14.5px] text-ink-2">
-            Falta pagar <span className="tnum font-semibold text-warn">{crc(pendingTotal)}</span>.
-          </p>
-        )}
+        <div className="mt-2 flex gap-4 text-[13px] text-ink-2">
+          <span className="inline-flex items-center gap-1.5"><span className="size-2.5 rounded-full bg-ink" aria-hidden />Obra</span>
+          <span className="inline-flex items-center gap-1.5"><span className="size-2.5 rounded-full bg-ink/35" aria-hidden />Gastos generales</span>
+        </div>
       </Card>
 
       <SectionTitle>Por etapa</SectionTitle>

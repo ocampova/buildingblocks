@@ -3,8 +3,8 @@ import { cx, PayerChip } from "./ui";
 /** Elegir quién pagó con radios nativos (para formularios de servidor). */
 export function PayerRadios({ partners, name = "payer", includeSplit = true, defaultValue }: { partners: { id: string; name: string; color: number }[]; name?: string; includeSplit?: boolean; defaultValue?: string }) {
   const opts = [
-    ...partners.map((p) => ({ value: `socio:${p.id}`, label: p.name.split(" ")[0], chip: <PayerChip name={p.name} color={p.color} size="sm" /> })),
-    { value: "caja", label: "Caja chica", chip: <PayerChip name="Caja" color="caja" size="sm" /> },
+    ...partners.map((p) => ({ value: `socio:${p.id}`, label: p.name.split(" ")[0], chip: <PayerChip name={p.name} color={p.color} /> })),
+    { value: "caja", label: "Caja chica", chip: <PayerChip name="Caja" color="caja" /> },
     ...(includeSplit && partners.length >= 2 ? [{ value: "mitad", label: "Mitad y mitad", chip: null }] : []),
   ];
   return (

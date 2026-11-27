@@ -25,12 +25,12 @@ export default async function ProjectLayout({ children, params }: { children: Re
             <Link
               href={`/p/${projectId}/cuentas#caja`}
               className={cx(
-                "tnum inline-flex min-h-9 items-center gap-1.5 rounded-full px-3 text-[13.5px] font-semibold",
+                "tnum inline-flex min-h-9 shrink-0 items-center gap-1.5 rounded-full px-3 text-[13.5px] font-semibold",
                 low ? "bg-warn-soft text-warn" : "bg-caja-soft text-caja",
               )}
             >
               <span aria-hidden className="size-2 rounded-full bg-current" />
-              <span className="sr-only">Caja chica:</span>
+              <span className="font-medium">Caja</span>
               {crc(cash)}
             </Link>
           )}
