@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ArrowDown, ArrowUp, Trash2 } from "lucide-react";
 import { ActionForm } from "@/components/action-form";
+import { changePassword } from "@/lib/auth-actions";
 import { PushSettings } from "@/components/push-prompt";
 import { vapidPublicKey } from "@/lib/push";
 import { InviteForm } from "@/components/invite-link";
@@ -196,6 +197,23 @@ export default async function Settings({ params, searchParams }: { params: Promi
       <SectionTitle>Avisos en este dispositivo</SectionTitle>
       <Card className="p-4 sm:p-5">
         <PushSettings vapidKey={await vapidPublicKey()} />
+      </Card>
+
+      <SectionTitle>Su contraseña</SectionTitle>
+      <Card className="p-4 sm:p-5">
+        <ActionForm action={changePassword} submitLabel="Cambiar contraseña" variant="secondary">
+          <div className="grid gap-4 sm:grid-cols-3">
+            <Field label="Contraseña actual" htmlFor="pcur">
+              <Input id="pcur" name="current" type="password" autoComplete="current-password" required />
+            </Field>
+            <Field label="Nueva" htmlFor="pnew" hint="Al menos 8 caracteres.">
+              <Input id="pnew" name="password" type="password" autoComplete="new-password" minLength={8} required />
+            </Field>
+            <Field label="Repita la nueva" htmlFor="pconf">
+              <Input id="pconf" name="confirm" type="password" autoComplete="new-password" required />
+            </Field>
+          </div>
+        </ActionForm>
       </Card>
 
       <form action="/salir" method="post" className="mt-10">

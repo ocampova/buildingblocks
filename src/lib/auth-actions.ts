@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import type { ActionState } from "@/components/action-form";
 import { prisma } from "./db";
-import { encodeSession, SESSION_COOKIE, sessionCookieOptions } from "./session";
+import { decodeSession, encodeSession, SESSION_COOKIE, sessionCookieOptions } from "./session";
 import { findValidToken } from "./tokens";
 import { DEFAULT_STAGES } from "./stages";
 
@@ -94,4 +94,24 @@ export async function activate(token: string, _: ActionState, form: FormData): P
   ]);
   await startSession(t.userId);
   redirect("/");
+}
+
+const ChangeSchema = z.object({
+  current: z.string().min(1, "Escriba su contraseña actual."),
+  password: z.string().min(8, "La contraseña nueva debe tener al menos 8 caracteres."),
+  confirm: z.string(),
+});
+
+/** Cambiar la propia contraseña desde Ajustes. */
+export async function changePassword(_: ActionState, form: FormData): Promise<ActionState> {
+  const store = await cookies();
+  const session = await decodeSession(store.get(SESSION_COOKIE)?.value);
+  if (!session) return { error: "Su sesión venció. Entre de nuevo." };
+  const parsed = ChangeSchema.safeParse(Object.fromEntries(form));
+  if (!parsed.success) return { error: parsed.error.issues[0].message };
+  if (parsed.data.password !== parsed.data.confirm) return { error: "Las dos contraseñas nuevas no coinciden." };
+  const user = await prisma.user.findUnique({ where: { id: session.userId } });
+  if (!user?.passwordHash || !(await bcrypt.compare(parsed.data.current, user.passwordHash))) return { error: "La contraseña actual no es correcta." };
+  await prisma.user.update({ where: { id: user.id }, data: { passwordHash: await bcrypt.hash(parsed.data.password, 10) } });
+  return { ok: "Contraseña cambiada." };
 }
