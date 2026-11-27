@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "skills": {
+    "design-taste-frontend": {
+      "source": "nexu-io/open-design",
+      "commit": "10f3f96e7d3cadcadd25b2b2f3a188c96877be0e",
+      "sourceType": "github",
+      "skillPath": "skills/taste-skill/SKILL.md",
+      "computedHash": "05316640bd06dbedfdca414faada58f66a42fd5c7eabf54aca6066d9d82d3ac0"
+    },
+    "frontend-design": {
+      "source": "anthropics/skills",
+      "commit": "e4bb5d960d87126ff3b3a8af1a104b7db67560ba",
+      "sourceType": "github",
+      "skillPath": "skills/frontend-design/SKILL.md",
+      "computedHash": "83485963700bcf11d5bf78118facb301676b69d918fee2e45a95e7f1a2840f6c"
+    }
+  }
+}
