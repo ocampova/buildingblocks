@@ -29,6 +29,8 @@ colors:
   danger-soft: "#fbe4e1"
   warn: "#8a5800"
   warn-soft: "#fbeccb"
+  ok: "#0b6870"
+  ok-soft: "#d8eef0"
 typography:
   display:
     fontFamily: "Archivo, Geist, ui-sans-serif, sans-serif"
@@ -255,7 +257,7 @@ The banknote source family. Each partner is assigned the next free slot in order
 - **Due Amber** (warn / warn-soft): amounts still owed ("Debe …"), dates about to fall due, petty cash under its minimum (the caja pill and card switch from violet to amber).
 
 ### Named Rules
-**The Whose Money Rule.** A source colour (note-0 to note-4, caja) appears only where it identifies who paid: payer chip, contribution-bar segment, a source's soft tint, a source legend dot. Status, progress and category use ink tones or the status colours, never a source colour.
+**The Whose Money Rule.** Status colours never borrow a source colour: ok is its own teal (#0b6870), not partner green. A source colour (note-0 to note-4, caja) appears only where it identifies who paid: payer chip, contribution-bar segment, a source's soft tint, a source legend dot. Status, progress and category use ink tones or the status colours, never a source colour.
 
 **The Nobody's Navy Rule.** Navy is structure and action, never a payer. Anything that belongs to both partners (the netting card, the shell) is navy-toned, not partner-toned.
 

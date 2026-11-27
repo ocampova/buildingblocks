@@ -435,6 +435,17 @@
           "#fcedcc"
         ],
         "cssVar": "--color-warn-soft"
+      },
+      "ok": {
+        "role": "status",
+        "displayName": "Teal OK",
+        "canonical": "#0b6870",
+        "note": "Success state. Deliberately not a banknote colour, so it never reads as a payer."
+      },
+      "ok-soft": {
+        "role": "status",
+        "displayName": "Teal OK Wash",
+        "canonical": "#d8eef0"
       }
     },
     "typographyMeta": {

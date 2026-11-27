@@ -42,8 +42,8 @@
   --color-danger-soft: #fbe4e1;
   --color-warn: #8a5800;
   --color-warn-soft: #fbeccb;
-  --color-ok: #17704c;
-  --color-ok-soft: #dcefe6;
+  --color-ok: #0b6870; /* verde azulado: no es el verde de ningún socio */
+  --color-ok-soft: #d8eef0;
 
   --radius-card: 14px;
   --radius-control: 10px;
