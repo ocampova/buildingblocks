@@ -7,14 +7,16 @@ import { ComparisonView } from "@/components/comparison";
 import { DeadlineBadge, StatusSteps } from "@/components/order-bits";
 import { PayerRadios } from "@/components/payer-radios";
 import { QuoteEditor } from "@/components/quote-editor";
+import { SupplierFinder } from "@/components/supplier-finder";
+import type { SupplierSearch } from "@/lib/supplier-ai";
 import { Button, Card, Field, Input, Notice, SectionTitle, Select, Textarea } from "@/components/ui";
 import { aiAvailable } from "@/lib/ai";
 import { handlesMoney, requireMember } from "@/lib/auth";
 import { compareQuotes } from "@/lib/compare";
 import { getPartners } from "@/lib/data";
 import { prisma } from "@/lib/db";
-import { crc, dateKey, dateLabel, todayKey } from "@/lib/format";
-import { buyOrder, cancelOrder, chooseLines, deleteQuote, receiveOrder, saveQuote, updateNeededBy } from "@/lib/order-actions";
+import { crc, dateKey, dateLabel, quantityLabel, todayKey } from "@/lib/format";
+import { buyOrder, cancelOrder, chooseLines, deleteQuote, findSuppliers, receiveOrder, saveQuote, saveSupplier, updateNeededBy } from "@/lib/order-actions";
 
 export const metadata: Metadata = { title: "Pedido" };
 
@@ -41,7 +43,7 @@ export default async function OrderDetail({ params, searchParams }: { params: Pr
     ? await Promise.all([
         getPartners(projectId),
         prisma.stage.findMany({ where: { projectId }, orderBy: { position: "asc" } }),
-        prisma.supplier.findMany({ where: { projectId }, orderBy: { name: "asc" }, select: { name: true } }),
+        prisma.supplier.findMany({ where: { projectId }, orderBy: { name: "asc" }, select: { name: true, phone: true } }),
       ])
     : [[], [], []];
 
@@ -76,6 +78,15 @@ export default async function OrderDetail({ params, searchParams }: { params: Pr
     };
   });
   const chosen = order.lines.filter((l) => l.chosenId).length;
+  const quoteMessage = [
+    `Hola, buenas. Le escribimos de ${member.project.name}${member.project.location ? ` en ${member.project.location}` : ""}. Quisiéramos una cotización de:`,
+    "",
+    ...order.lines.map((l) => `• ${quantityLabel(l.quantity, l.unit)} de ${l.material}${l.quality ? ` (${l.quality})` : ""}`),
+    "",
+    `Los necesitamos para el ${dateLabel(order.neededBy, { weekday: "long", day: "numeric", month: "long" })}. ¿Tienen transporte a la obra y cuánto cuesta? ¿Dan crédito?`,
+    "",
+    "Muchas gracias.",
+  ].join("\n");
   const spent = order.expenses.reduce((s, e) => s + e.total, 0);
 
   return (
@@ -203,6 +214,23 @@ export default async function OrderDetail({ params, searchParams }: { params: Pr
         </section>
       )}
 
+      {money && open && (
+        <section className="mt-10" id="proveedores">
+          <SectionTitle>Proveedores para cotizar</SectionTitle>
+          <SupplierFinder
+            message={quoteMessage}
+            known={suppliers.map((s) => ({ name: s.name, phone: s.phone }))}
+            saved={(order.supplierSearch as SupplierSearch | null) ?? null}
+            searchedAt={order.supplierSearchAt ? dateLabel(order.supplierSearchAt, { day: "numeric", month: "short" }) : null}
+            aiEnabled={aiAvailable()}
+            hasLocation={Boolean(member.project.location?.trim())}
+            settingsHref={`/p/${projectId}/ajustes`}
+            find={findSuppliers.bind(null, projectId, order.id)}
+            save={saveSupplier.bind(null, projectId)}
+          />
+        </section>
+      )}
+
       {money && open && chosen > 0 && (
         <section className="mt-10" id="comprar">
           <SectionTitle>Registrar la compra</SectionTitle>
@@ -245,7 +273,7 @@ export default async function OrderDetail({ params, searchParams }: { params: Pr
 
       {(order.status === "COMPRADO" || order.status === "RECIBIDO") && (
         <section className="mt-10">
-          <SectionTitle>Compra</SectionTitle>
+          <SectionTitle>{money ? "Compra" : "Se le compró a"}</SectionTitle>
           <Card>
             <ul className="divide-y divide-line">
               {order.expenses.map((e) => {
@@ -254,10 +282,14 @@ export default async function OrderDetail({ params, searchParams }: { params: Pr
                   <>
                     <ReceiptText className="size-5 shrink-0 text-ink-3" aria-hidden />
                     <span className="min-w-0 flex-1 font-semibold">{e.supplier}</span>
-                    <span className="text-right">
-                      <span className="tnum block font-semibold">{crc(e.total)}</span>
-                      {pending > 0 && <span className="tnum block text-[13px] font-semibold text-warn">Debe {crc(pending)}</span>}
-                    </span>
+                    {money ? (
+                      <span className="text-right">
+                        <span className="tnum block font-semibold">{crc(e.total)}</span>
+                        {pending > 0 && <span className="tnum block text-[13px] font-semibold text-warn">Debe {crc(pending)}</span>}
+                      </span>
+                    ) : (
+                      <span className="text-[13.5px] text-ink-3">{order.boughtAt ? `Comprado el ${dateLabel(order.boughtAt, { day: "numeric", month: "short" })}` : "Comprado"}</span>
+                    )}
                   </>
                 );
                 return (
@@ -273,7 +305,7 @@ export default async function OrderDetail({ params, searchParams }: { params: Pr
                 );
               })}
             </ul>
-            {order.expenses.length > 1 && (
+            {money && order.expenses.length > 1 && (
               <p className="border-t border-line px-4 py-3 text-[14.5px] text-ink-2">
                 Total: <span className="tnum font-semibold text-ink">{crc(spent)}</span>
               </p>

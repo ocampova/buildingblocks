@@ -52,6 +52,8 @@ model Project {
   orders      Order[]
   /// Número del siguiente pedido (1, 2, 3…)
   nextOrderNumber Int @default(1)
+  /// Dónde está la obra (cantón, provincia), para buscar proveedores cercanos
+  location    String?
 }
 
 enum Role {
@@ -263,6 +265,9 @@ model Order {
   boughtAt     DateTime?
   receivedAt   DateTime?
   receivedNote String?
+  /// Última búsqueda de proveedores con IA (resultados y fuentes)
+  supplierSearch   Json?
+  supplierSearchAt DateTime?
   lines        OrderLine[]
   quotes       Quote[]
   expenses     Expense[]

@@ -185,6 +185,9 @@ export default async function Settings({ params, searchParams }: { params: Promi
                 <Field label="Nombre" htmlFor="pname">
                   <Input id="pname" name="name" defaultValue={member.project.name} required />
                 </Field>
+                <Field label="Ubicación de la obra" htmlFor="ploc" hint="Cantón y provincia. Se usa para buscar proveedores cerca.">
+                  <Input id="ploc" name="location" defaultValue={member.project.location ?? ""} placeholder="Ej.: Grecia, Alajuela" />
+                </Field>
                 <Field label="Mínimo de la caja chica" htmlFor="pmin" hint="Avisa cuando la caja baja de este monto.">
                   <Input id="pmin" name="cashMinimum" inputMode="numeric" defaultValue={grouped(member.project.cashMinimum)} />
                 </Field>

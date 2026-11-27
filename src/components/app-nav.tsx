@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { ChartColumnBig, ClipboardList, House, Plus, ReceiptText, Scale, Settings } from "lucide-react";
+import { usePathname, useSearchParams } from "next/navigation";
+import { ChartColumnBig, ClipboardList, House, Plus, ReceiptText, Scale, Settings, Truck } from "lucide-react";
 
 import { cx } from "./ui";
 
@@ -10,6 +10,7 @@ type Item = { href: string; label: string; icon: typeof House; exact?: boolean }
 
 export function AppNav({ projectId, projectName, role, userName }: { projectId: string; projectName: string; role: string; userName: string }) {
   const path = usePathname();
+  const ver = useSearchParams().get("ver");
   const base = `/p/${projectId}`;
   const money = role !== "CONSTRUCTOR";
   const items: Item[] = [
@@ -17,13 +18,22 @@ export function AppNav({ projectId, projectName, role, userName }: { projectId: 
     { href: `${base}/pedidos`, label: "Pedidos", icon: ClipboardList },
     ...(money ? [{ href: `${base}/gastos`, label: "Gastos", icon: ReceiptText }] : []),
     ...(money ? [{ href: `${base}/cuentas`, label: "Cuentas", icon: Scale }] : []),
-    { href: `${base}/resumen`, label: "Resumen", icon: ChartColumnBig },
+    // El constructor no ve gastos ni el resumen de lo gastado
+    ...(money ? [{ href: `${base}/resumen`, label: "Resumen", icon: ChartColumnBig }] : []),
   ];
   // En el celular, Resumen vive en el riel de la computadora y en el inicio
   // El constructor tiene menos secciones: Ajustes completa la barra para que el botón quede al centro
-  const tabs = money ? items.filter((i) => i.label !== "Resumen") : [...items, { href: `${base}/ajustes`, label: "Ajustes", icon: Settings }];
+  const tabs = money
+    ? items.filter((i) => i.label !== "Resumen")
+    : [items[0], items[1], { href: `${base}/pedidos?ver=comprados`, label: "Por llegar", icon: Truck }, { href: `${base}/ajustes`, label: "Ajustes", icon: Settings }];
   const newPaths = [`${base}/gastos/nuevo`, `${base}/pedidos/nuevo`];
-  const active = (i: Item) => (i.exact ? path === i.href : path.startsWith(i.href) && !newPaths.some((n) => path.startsWith(n)));
+  const active = (i: Item) => {
+    if (i.href.includes("?")) return path === i.href.split("?")[0] && `?ver=${ver}` === "?" + i.href.split("?")[1];
+    if (i.exact) return path === i.href;
+    // "Pedidos" no se marca cuando el constructor está en "Por llegar"
+    if (!money && i.href === `${base}/pedidos` && ver === "comprados") return false;
+    return path.startsWith(i.href) && !newPaths.some((n) => path.startsWith(n));
+  };
   // El botón principal: el constructor pide materiales; los demás registran gastos
   const registerHref = money ? `${base}/gastos/nuevo` : `${base}/pedidos/nuevo`;
   const registerLabel = money ? "Registrar gasto" : "Nuevo pedido";

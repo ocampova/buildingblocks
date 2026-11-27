@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import { Settings } from "lucide-react";
 import { AppNav } from "@/components/app-nav";
 import { cx } from "@/components/ui";
@@ -15,7 +16,9 @@ export default async function ProjectLayout({ children, params }: { children: Re
 
   return (
     <div className="min-h-dvh lg:pl-64">
-      <AppNav projectId={projectId} projectName={member.project.name} role={member.role} userName={member.user.name} />
+      <Suspense>
+        <AppNav projectId={projectId} projectName={member.project.name} role={member.role} userName={member.user.name} />
+      </Suspense>
 
       {/* Celular: barra superior */}
       <header className="sticky top-0 z-20 border-b border-line bg-surface/95 backdrop-blur lg:hidden">

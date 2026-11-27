@@ -80,3 +80,11 @@ export function capitalize(s: string) {
 export function plural(n: number, one: string, many: string) {
   return `${n} ${n === 1 ? one : many}`;
 }
+
+/** "800 unidades", "1 saco", "40 sacos", "3 galones", "6 m³" */
+export function quantityLabel(quantity: number, unit: string) {
+  const q = Number.isInteger(quantity) ? String(quantity) : String(quantity).replace(".", ",");
+  if (quantity === 1 || !/^[a-záéíóúñ]+$/i.test(unit)) return `${q} ${unit}`;
+  const plural = /[aeiou]$/i.test(unit) ? unit + "s" : /ón$/i.test(unit) ? unit.replace(/ón$/i, "ones") : /[dlnrj]$/i.test(unit) ? unit + "es" : unit;
+  return `${q} ${plural}`;
+}

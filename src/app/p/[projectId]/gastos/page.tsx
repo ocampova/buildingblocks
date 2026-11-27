@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Plus } from "lucide-react";
 import type { Prisma } from "@prisma/client";
 import { ExpenseRow } from "@/components/expense-row";
+import { ExportButton } from "@/components/export-button";
 import { ButtonLink, Card, cx, EmptyState, Notice, PageHeader } from "@/components/ui";
 import { requireMoneyMember } from "@/lib/auth";
 import { expenseListInclude, getPartners } from "@/lib/data";
@@ -51,8 +52,9 @@ export default async function Expenses({ params, searchParams }: { params: Promi
           </span>
         }
         action={
-          <div className="hidden lg:block">
-            <ButtonLink href={`/p/${projectId}/gastos/nuevo`}>
+          <div className="flex gap-2">
+            <ExportButton projectId={projectId} />
+            <ButtonLink href={`/p/${projectId}/gastos/nuevo`} className="hidden lg:inline-flex">
               <Plus className="size-5" aria-hidden /> Registrar gasto
             </ButtonLink>
           </div>

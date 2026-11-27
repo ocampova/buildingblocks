@@ -15,7 +15,8 @@ export async function updateProject(projectId: string, _: ActionState, form: For
   const name = String(form.get("name") ?? "").trim();
   const cashMinimum = parseAmount(form.get("cashMinimum")) ?? 0;
   if (name.length < 2) return { error: "Escriba el nombre del proyecto." };
-  await prisma.project.update({ where: { id: projectId }, data: { name, cashMinimum } });
+  const location = String(form.get("location") ?? "").trim().slice(0, 120) || null;
+  await prisma.project.update({ where: { id: projectId }, data: { name, cashMinimum, location } });
   revalidatePath(`/p/${projectId}`, "layout");
   return { ok: "Proyecto actualizado." };
 }

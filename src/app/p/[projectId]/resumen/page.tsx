@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
+import { ExportButton } from "@/components/export-button";
 import Link from "next/link";
 import { Card, cx, EmptyState, noteBg, PageHeader, SectionTitle } from "@/components/ui";
-import { requireMember, seesPartnerAccounts } from "@/lib/auth";
+import { requireMoneyMember } from "@/lib/auth";
 import { getPartners } from "@/lib/data";
 import { prisma } from "@/lib/db";
 import { crc, dateLabel, firstName, keyToDate, todayKey } from "@/lib/format";
@@ -10,8 +11,9 @@ export const metadata: Metadata = { title: "Resumen" };
 
 export default async function Summary({ params }: { params: Promise<{ projectId: string }> }) {
   const { projectId } = await params;
-  const member = await requireMember(projectId);
-  const money = seesPartnerAccounts(member.role);
+  // Solo socios y administración: el constructor no ve gastos
+  await requireMoneyMember(projectId);
+  const money = true;
   const [stages, expenses, partners] = await Promise.all([
     prisma.stage.findMany({ where: { projectId }, orderBy: { position: "asc" } }),
     prisma.expense.findMany({ where: { projectId }, select: { id: true, stageId: true, total: true, receiptType: true, dueDate: true, description: true, payments: { select: { amount: true, source: true, partnerId: true } } } }),
@@ -56,7 +58,7 @@ export default async function Summary({ params }: { params: Promise<{ projectId:
 
   return (
     <div>
-      <PageHeader title="Resumen" description="Cuánto se ha gastado por etapa y lo que falta por pagar." />
+      <PageHeader title="Resumen" description="Cuánto se ha gastado por etapa y lo que falta por pagar." action={<ExportButton projectId={projectId} />} />
 
       <Card className="p-5 lg:p-6">
         <p className="max-w-[46ch] text-balance text-[19px] leading-snug text-ink-2 lg:text-[21px]">

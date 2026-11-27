@@ -285,3 +285,35 @@ export async function updateNeededBy(projectId: string, orderId: string, _: Acti
   return { ok: "Fecha actualizada." };
 }
 
+
+/** Busca proveedores con IA para este pedido y guarda el resultado en el pedido. */
+export async function findSuppliers(projectId: string, orderId: string): Promise<ActionState> {
+  const member = await requireMoneyMember(projectId);
+  const { searchSuppliers } = await import("./supplier-ai");
+  const { aiAvailable } = await import("./ai");
+  if (!aiAvailable()) return { error: "Falta configurar la clave de IA (OPENAI_API_KEY) en Railway." };
+  const location = member.project.location?.trim();
+  if (!location) return { error: "Primero ponga la ubicación de la obra en Ajustes › Proyecto." };
+  const order = await prisma.order.findFirst({ where: { id: orderId, projectId }, include: { lines: { orderBy: { position: "asc" } } } });
+  if (!order) return { error: "Ese pedido ya no existe." };
+  const result = await searchSuppliers(location, order.lines);
+  if (!result) return { error: "No se pudo completar la búsqueda. Intente de nuevo en un momento." };
+  await prisma.order.update({ where: { id: orderId }, data: { supplierSearch: result as object, supplierSearchAt: new Date() } });
+  revalidatePath(`/p/${projectId}/pedidos/${orderId}`);
+  return { ok: result.suppliers.length ? `Se encontraron ${result.suppliers.length} proveedores.` : "No se encontraron proveedores cerca." };
+}
+
+/** Guarda un proveedor sugerido (con su teléfono) en la lista del proyecto. */
+export async function saveSupplier(projectId: string, name: string, phone: string | null): Promise<ActionState> {
+  await requireMoneyMember(projectId);
+  const clean = name.trim().slice(0, 120);
+  if (!clean) return { error: "Falta el nombre." };
+  const digits = phone?.replace(/\D/g, "") || null;
+  await prisma.supplier.upsert({
+    where: { projectId_name: { projectId, name: clean } },
+    create: { projectId, name: clean, phone: digits },
+    update: digits ? { phone: digits } : {},
+  });
+  revalidatePath(`/p/${projectId}/pedidos`, "layout");
+  return { ok: "Guardado en sus proveedores." };
+}

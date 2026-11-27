@@ -25,7 +25,12 @@ Herramienta web para el celular y la computadora que controla los gastos de una 
 - **Recibido:** el constructor marca cuando llega a la obra y anota faltantes.
 - **Avisos en el celular:** pedido nuevo, pedido comprado, recibido en obra, caja chica bajo el mínimo.
 
-Roles: **socio** (ve y hace todo), **administración** (cotiza, compra, registra gastos y pagos, no borra), **constructor** (pide materiales, ve cotizaciones y precios, marca recibidos; no ve las cuentas entre socios ni la caja).
+## Fase 3 (en parte)
+
+- **Exportar a Excel:** botón "Descargar Excel" en Gastos, Cuentas y Resumen. Hojas: gastos (con lo que pagó cada socio), pagos, detalle de facturas, por etapa, cuentas entre socios y caja/transferencias, con totales en fórmula.
+- **Proveedores para cotizar:** en cada pedido, el mensaje de WhatsApp listo para pedir cotización, envío directo a los proveedores guardados con teléfono y búsqueda con IA en internet de ferreterías y depósitos cerca de la obra (requiere la ubicación en Ajustes › Proyecto y la clave de IA). Se guarda la última búsqueda en el pedido.
+
+Roles: **socio** (ve y hace todo), **administración** (cotiza, compra, registra gastos y pagos, exporta, no borra), **constructor** (pide materiales, ve cotizaciones y precios, marca recibidos; no ve gastos, montos de compra, cuentas entre socios, caja ni resumen).
 
 ## Correr en local
 

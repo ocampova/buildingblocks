@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Trash2 } from "lucide-react";
 import { ActionForm } from "@/components/action-form";
+import { ExportButton } from "@/components/export-button";
 import { NettingCard } from "@/components/contribution";
 import { TopUpForm } from "@/components/topup-form";
 import { Card, cx, EmptyState, Field, Input, Notice, PageHeader, PayerChip, SectionTitle, Select } from "@/components/ui";
@@ -50,7 +51,7 @@ export default async function Accounts({ params }: { params: Promise<{ projectId
 
   return (
     <div>
-      <PageHeader title="Cuentas" description="Lo que ha puesto cada socio, la caja chica y cómo quedar parejos." />
+      <PageHeader title="Cuentas" description="Lo que ha puesto cada socio, la caja chica y cómo quedar parejos." action={<ExportButton projectId={projectId} />} />
 
       <div className="grid gap-6 lg:grid-cols-2 lg:gap-8">
         <div className="min-w-0 space-y-6">
