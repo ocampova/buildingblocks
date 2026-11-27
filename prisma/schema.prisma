@@ -1,0 +1,209 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Montos en colones enteros (Int). Hacienda trae decimales: se redondean al colón.
+
+model User {
+  id           String      @id @default(cuid())
+  name         String
+  email        String      @unique
+  passwordHash String?
+  active       Boolean     @default(true)
+  createdAt    DateTime    @default(now())
+  memberships  Member[]
+  tokens       AuthToken[]
+}
+
+enum TokenPurpose {
+  INVITE
+  RESET
+}
+
+model AuthToken {
+  id        String       @id @default(cuid())
+  userId    String
+  user      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  purpose   TokenPurpose
+  tokenHash String       @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime     @default(now())
+}
+
+model Project {
+  id          String         @id @default(cuid())
+  name        String
+  cashMinimum Int            @default(0)
+  createdAt   DateTime       @default(now())
+  members     Member[]
+  stages      Stage[]
+  expenses    Expense[]
+  deposits    CashDeposit[]
+  settlements Settlement[]
+  attachments Attachment[]
+}
+
+enum Role {
+  SOCIO
+  ADMINISTRACION
+  CONSTRUCTOR
+}
+
+model Member {
+  id        String   @id @default(cuid())
+  projectId String
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role      Role
+  /// Porcentaje de participación del socio (50 = 50 %). Solo socios.
+  share     Int?
+  /// Color de billete asignado al socio (índice de la paleta)
+  color     Int      @default(0)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  payments         Payment[]     @relation("PaidBy")
+  deposits         CashDeposit[]
+  settlementsSent  Settlement[]  @relation("SettlementFrom")
+  settlementsRecvd Settlement[]  @relation("SettlementTo")
+  expensesCreated  Expense[]     @relation("ExpenseCreatedBy")
+
+  @@unique([projectId, userId])
+}
+
+enum StageKind {
+  OBRA
+  GENERAL
+}
+
+model Stage {
+  id        String    @id @default(cuid())
+  projectId String
+  project   Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  name      String
+  position  Int
+  kind      StageKind @default(OBRA)
+  budget    Int?
+  expenses  Expense[]
+
+  @@index([projectId, position])
+}
+
+enum ReceiptType {
+  FACTURA
+  TIQUETE
+  NOTA
+  COMPROBANTE
+  NINGUNO
+}
+
+model Expense {
+  id           String        @id @default(cuid())
+  projectId    String
+  project      Project       @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  stageId      String
+  stage        Stage         @relation(fields: [stageId], references: [id])
+  date         DateTime      @db.Date
+  supplier     String?
+  description  String
+  total        Int
+  currency     String        @default("CRC")
+  /// Monto original en dólares, si la factura venía en USD (centavos)
+  originalUsdCents Int?
+  exchangeRate Float?
+  dueDate      DateTime?     @db.Date
+  receiptType  ReceiptType   @default(NINGUNO)
+  /// Clave de 50 dígitos de la factura electrónica
+  haciendaKey  String?
+  notes        String?
+  createdById  String
+  createdBy    Member        @relation("ExpenseCreatedBy", fields: [createdById], references: [id])
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  lines        ExpenseLine[]
+  payments     Payment[]
+  attachments  Attachment[]
+
+  @@unique([projectId, haciendaKey])
+  @@index([projectId, date])
+}
+
+model ExpenseLine {
+  id          String  @id @default(cuid())
+  expenseId   String
+  expense     Expense @relation(fields: [expenseId], references: [id], onDelete: Cascade)
+  description String
+  quantity    Float
+  unitPrice   Int
+  total       Int
+}
+
+enum PaymentSource {
+  SOCIO
+  CAJA
+}
+
+model Payment {
+  id          String        @id @default(cuid())
+  expenseId   String
+  expense     Expense       @relation(fields: [expenseId], references: [id], onDelete: Cascade)
+  date        DateTime      @db.Date
+  amount      Int
+  source      PaymentSource
+  partnerId   String?
+  partner     Member?       @relation("PaidBy", fields: [partnerId], references: [id])
+  createdAt   DateTime      @default(now())
+  attachments Attachment[]
+}
+
+model CashDeposit {
+  id          String       @id @default(cuid())
+  projectId   String
+  project     Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  partnerId   String
+  partner     Member       @relation(fields: [partnerId], references: [id])
+  date        DateTime     @db.Date
+  amount      Int
+  note        String?
+  createdAt   DateTime     @default(now())
+  attachments Attachment[]
+}
+
+model Settlement {
+  id            String   @id @default(cuid())
+  projectId     String
+  project       Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  fromPartnerId String
+  fromPartner   Member   @relation("SettlementFrom", fields: [fromPartnerId], references: [id])
+  toPartnerId   String
+  toPartner     Member   @relation("SettlementTo", fields: [toPartnerId], references: [id])
+  date          DateTime @db.Date
+  amount        Int
+  note          String?
+  createdAt     DateTime @default(now())
+}
+
+model Attachment {
+  id            String       @id @default(cuid())
+  projectId     String
+  project       Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  filename      String
+  mime          String
+  size          Int
+  data          Bytes
+  createdById   String?
+  createdAt     DateTime     @default(now())
+  expenseId     String?
+  expense       Expense?     @relation(fields: [expenseId], references: [id], onDelete: Cascade)
+  paymentId     String?
+  payment       Payment?     @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+  cashDepositId String?
+  cashDeposit   CashDeposit? @relation(fields: [cashDepositId], references: [id], onDelete: Cascade)
+}

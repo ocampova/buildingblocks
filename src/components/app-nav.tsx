@@ -1,0 +1,115 @@
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { ChartColumnBig, House, Plus, ReceiptText, Scale, Settings } from "lucide-react";
+import { cx } from "./ui";
+
+type Item = { href: string; label: string; icon: typeof House; exact?: boolean };
+
+export function AppNav({ projectId, projectName, role, userName }: { projectId: string; projectName: string; role: string; userName: string }) {
+  const path = usePathname();
+  const base = `/p/${projectId}`;
+  const money = role !== "CONSTRUCTOR";
+  const items: Item[] = [
+    { href: base, label: "Inicio", icon: House, exact: true },
+    ...(money ? [{ href: `${base}/gastos`, label: "Gastos", icon: ReceiptText }] : []),
+    ...(money ? [{ href: `${base}/cuentas`, label: "Cuentas", icon: Scale }] : []),
+    { href: `${base}/resumen`, label: "Resumen", icon: ChartColumnBig },
+  ];
+  const active = (i: Item) => (i.exact ? path === i.href : path.startsWith(i.href) && !path.startsWith(`${base}/gastos/nuevo`));
+  const registerHref = `${base}/gastos/nuevo`;
+  const registering = path.startsWith(registerHref);
+
+  return (
+    <>
+      {/* Computadora: riel lateral */}
+      <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r border-line bg-surface lg:flex">
+        <div className="px-5 pb-4 pt-6">
+          <p className="text-[13px] font-semibold text-brand">Obra</p>
+          <p className="mt-0.5 truncate text-[17px] font-semibold tracking-[-0.01em]">{projectName}</p>
+        </div>
+        {money && (
+          <div className="px-4 pb-3">
+            <Link
+              href={registerHref}
+              className={cx(
+                "flex min-h-12 items-center justify-center gap-2 rounded-control bg-brand px-4 text-[15px] font-semibold text-white shadow-raise transition-colors hover:bg-brand-strong",
+                registering && "bg-brand-strong",
+              )}
+            >
+              <Plus className="size-5" strokeWidth={2.4} aria-hidden />
+              Registrar gasto
+            </Link>
+          </div>
+        )}
+        <nav aria-label="Principal" className="flex-1 space-y-0.5 px-3">
+          {items.map((i) => (
+            <Link
+              key={i.href}
+              href={i.href}
+              aria-current={active(i) ? "page" : undefined}
+              className={cx(
+                "flex min-h-11 items-center gap-3 rounded-control px-3 text-[15px] font-medium transition-colors",
+                active(i) ? "bg-brand-soft text-brand-strong" : "text-ink-2 hover:bg-sunken hover:text-ink",
+              )}
+            >
+              <i.icon className="size-[19px]" strokeWidth={active(i) ? 2.3 : 1.9} aria-hidden />
+              {i.label}
+            </Link>
+          ))}
+        </nav>
+        <div className="border-t border-line px-3 py-3">
+          <Link
+            href={`${base}/ajustes`}
+            aria-current={path.startsWith(`${base}/ajustes`) ? "page" : undefined}
+            className={cx(
+              "flex min-h-11 items-center gap-3 rounded-control px-3 text-[15px] font-medium transition-colors",
+              path.startsWith(`${base}/ajustes`) ? "bg-brand-soft text-brand-strong" : "text-ink-2 hover:bg-sunken hover:text-ink",
+            )}
+          >
+            <Settings className="size-[19px]" strokeWidth={1.9} aria-hidden />
+            Ajustes
+          </Link>
+          <p className="truncate px-3 pt-2 text-[13px] text-ink-3">{userName}</p>
+        </div>
+      </aside>
+
+      {/* Celular: barra inferior con el botón de registrar al centro. Se oculta mientras se registra un gasto. */}
+      <nav aria-label="Principal" hidden={registering} className="fixed inset-x-0 bottom-0 z-30 border-t border-line bg-surface/95 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden">
+        <ul className="mx-auto flex max-w-xl items-stretch justify-around px-1">
+          {items.slice(0, money ? 2 : items.length).map((i) => (
+            <TabItem key={i.href} item={i} active={active(i)} />
+          ))}
+          {money && (
+            <li className="flex flex-1 justify-center">
+              <Link
+                href={registerHref}
+                aria-label="Registrar gasto"
+                className="-mt-5 grid size-[60px] place-items-center rounded-full bg-brand text-white shadow-float ring-4 ring-ground transition-transform active:scale-95"
+              >
+                <Plus className="size-7" strokeWidth={2.4} aria-hidden />
+              </Link>
+            </li>
+          )}
+          {money && items.slice(2).map((i) => <TabItem key={i.href} item={i} active={active(i)} />)}
+        </ul>
+      </nav>
+    </>
+  );
+}
+
+function TabItem({ item, active }: { item: Item; active: boolean }) {
+  return (
+    <li className="flex flex-1">
+      <Link
+        href={item.href}
+        aria-current={active ? "page" : undefined}
+        className={cx("flex min-h-[60px] flex-1 flex-col items-center justify-center gap-1 text-[11.5px] font-semibold", active ? "text-brand" : "text-ink-3")}
+      >
+        <item.icon className="size-[22px]" strokeWidth={active ? 2.3 : 1.9} aria-hidden />
+        {item.label}
+      </Link>
+    </li>
+  );
+}

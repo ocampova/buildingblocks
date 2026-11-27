@@ -1,0 +1,126 @@
+@import "tailwindcss";
+
+/*
+ * Mundo visual "Colón": cada fuente de dinero tiene el color de un billete.
+ * Fondo claro (se usa al sol, en ferreterías y en la obra), tinta casi negra,
+ * azul profundo del billete de diez mil para la estructura y la acción principal.
+ */
+@theme {
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+
+  --color-ground: #f2f5f4;
+  --color-surface: #ffffff;
+  --color-sunken: #e8eeeb;
+  --color-line: #d6dfdb;
+  --color-line-strong: #b9c6c0;
+
+  --color-ink: #14201c;
+  --color-ink-2: #4b5a54;
+  --color-ink-3: #5d6c66;
+
+  --color-brand: #173a6e;
+  --color-brand-strong: #0f2a52;
+  --color-brand-soft: #e3eaf5;
+
+  /* Colores de billete por fuente de dinero (texto blanco encima ≥ 5:1) */
+  --color-note-0: #17704c; /* verde */
+  --color-note-1: #8f5c0a; /* ocre */
+  --color-note-2: #b0302b; /* rojo */
+  --color-note-3: #2559a3; /* azul */
+  --color-note-4: #a8460f; /* naranja */
+  --color-caja: #5f4596; /* violeta: caja chica */
+  --color-note-0-soft: #dcefe6;
+  --color-note-1-soft: #f5e8d2;
+  --color-note-2-soft: #f6dedc;
+  --color-note-3-soft: #dde7f6;
+  --color-note-4-soft: #f6e2d6;
+  --color-caja-soft: #e8e1f3;
+
+  --color-danger: #b42318;
+  --color-danger-soft: #fbe4e1;
+  --color-warn: #8a5800;
+  --color-warn-soft: #fbeccb;
+  --color-ok: #17704c;
+  --color-ok-soft: #dcefe6;
+
+  --radius-card: 14px;
+  --radius-control: 10px;
+
+  --shadow-raise: 0 1px 2px rgb(20 32 28 / 0.06), 0 4px 12px rgb(20 32 28 / 0.06);
+  --shadow-float: 0 6px 16px rgb(15 42 82 / 0.22), 0 2px 4px rgb(15 42 82 / 0.16);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+    text-size-adjust: 100%;
+  }
+  body {
+    background: var(--color-ground);
+    color: var(--color-ink);
+    font-feature-settings: "ss01", "cv11";
+  }
+  ::selection {
+    background: var(--color-brand-soft);
+    color: var(--color-brand-strong);
+  }
+  input,
+  textarea,
+  select {
+    caret-color: var(--color-brand);
+  }
+  :focus-visible {
+    outline: 2.5px solid var(--color-brand);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+  a {
+    text-underline-offset: 3px;
+  }
+  * {
+    scrollbar-color: var(--color-line-strong) transparent;
+  }
+  /* Montos: cifras tabulares siempre */
+  .tnum,
+  table,
+  input[inputmode="numeric"] {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* Barra de aportes: cada segmento crece una vez al cargar */
+@media (prefers-reduced-motion: no-preference) {
+  .grow-x {
+    transform-origin: left center;
+    animation: grow-x 520ms var(--ease-out-expo) both;
+  }
+  .rise {
+    animation: rise 360ms var(--ease-out-expo) both;
+  }
+}
+@keyframes grow-x {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Guilloche de billete, solo en la tarjeta de cuentas */
+.guilloche {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='64' viewBox='0 0 240 64'%3E%3Cg fill='none' stroke='%23173a6e' stroke-opacity='.09' stroke-width='.8'%3E%3Cpath d='M0 32c20-26 40-26 60 0s40 26 60 0 40-26 60 0 40 26 60 0'/%3E%3Cpath d='M0 32c20-18 40-18 60 0s40 18 60 0 40-18 60 0 40 18 60 0'/%3E%3Cpath d='M0 32c20-10 40-10 60 0s40 10 60 0 40-10 60 0 40 10 60 0'/%3E%3Cpath d='M0 32c20 26 40 26 60 0s40-26 60 0 40 26 60 0 40-26 60 0'/%3E%3Cpath d='M0 32c20 18 40 18 60 0s40-18 60 0 40 18 60 0 40-18 60 0'/%3E%3Cpath d='M0 32c20 10 40 10 60 0s40-10 60 0 40 10 60 0 40-10 60 0'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 240px 64px;
+}

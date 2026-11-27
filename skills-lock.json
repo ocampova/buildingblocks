@@ -8,12 +8,26 @@
       "skillPath": "skills/taste-skill/SKILL.md",
       "computedHash": "05316640bd06dbedfdca414faada58f66a42fd5c7eabf54aca6066d9d82d3ac0"
     },
+    "emilkowalski-motion": {
+      "source": "nexu-io/open-design",
+      "commit": "10f3f96e7d3cadcadd25b2b2f3a188c96877be0e",
+      "sourceType": "github",
+      "skillPath": "skills/emilkowalski-motion/SKILL.md",
+      "computedHash": "3a78f9b66dd9e95a592e24000185dff1c15ea5e1ae512e5f14ac3c76d3469d68"
+    },
     "frontend-design": {
       "source": "anthropics/skills",
       "commit": "e4bb5d960d87126ff3b3a8af1a104b7db67560ba",
       "sourceType": "github",
       "skillPath": "skills/frontend-design/SKILL.md",
       "computedHash": "83485963700bcf11d5bf78118facb301676b69d918fee2e45a95e7f1a2840f6c"
+    },
+    "impeccable": {
+      "source": "pbakaus/impeccable",
+      "commit": "2fc5e1459efbbf06d92c7306517c286bf12490cf",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/impeccable/SKILL.md",
+      "computedHash": "ba5494cb853df34dc3284176083f954829717c42474107d5d01934b2f43930b4"
     }
   }
 }
