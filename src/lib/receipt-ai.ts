@@ -1,5 +1,5 @@
 import "server-only";
-import Anthropic from "@anthropic-ai/sdk";
+import { extract, type AiFile } from "./ai";
 import { z } from "zod";
 
 /** Lo que la IA propone a partir de la foto o el PDF de un recibo. Siempre lo confirma una persona. */
@@ -21,7 +21,7 @@ export const ReceiptSchema = z.object({
 });
 export type ReceiptGuess = z.infer<typeof ReceiptSchema>;
 
-const JSON_SCHEMA = {
+const JSON_SCHEMA: Record<string, unknown> = {
   type: "object",
   additionalProperties: false,
   required: ["kind", "supplier", "date", "currency", "total", "description", "lines"],
@@ -47,7 +47,7 @@ const JSON_SCHEMA = {
       },
     },
   },
-} as const;
+};
 
 const PROMPT = `Este documento es un respaldo de un gasto de una construcción en Costa Rica: puede ser una factura, un tiquete de ferretería, una nota escrita a mano (vagonetas, horas de maquinaria, mano de obra) o un comprobante de SINPE Móvil o transferencia.
 
@@ -62,42 +62,9 @@ Extrae:
 
 No inventes datos: si algo no se lee, usa null.`;
 
-export function aiAvailable() {
-  return Boolean(process.env.ANTHROPIC_API_KEY);
-}
+export { aiAvailable } from "./ai";
 
 /** Devuelve null si no hay clave configurada, si el modelo no pudo leerlo o si la respuesta no es válida. */
-export async function readReceipt(file: { data: Buffer; mime: string }): Promise<ReceiptGuess | null> {
-  if (!aiAvailable()) return null;
-  const client = new Anthropic();
-  const b64 = file.data.toString("base64");
-  const source: Anthropic.Beta.BetaContentBlockParam =
-    file.mime === "application/pdf"
-      ? { type: "document", source: { type: "base64", media_type: "application/pdf", data: b64 } }
-      : {
-          type: "image",
-          source: { type: "base64", media_type: file.mime as "image/jpeg" | "image/png" | "image/webp" | "image/gif", data: b64 },
-        };
-
-  try {
-    const response = await client.beta.messages.create({
-      model: "claude-opus-5-5",
-      max_tokens: 4000,
-      betas: ["server-side-fallback-2026-07-01"],
-      fallbacks: "default",
-      output_config: { effort: "low", format: { type: "json_schema", schema: JSON_SCHEMA } },
-      messages: [{ role: "user", content: [source, { type: "text", text: PROMPT }] }],
-    });
-    if (response.stop_reason === "refusal" || response.stop_reason === "max_tokens") return null;
-    const text = response.content.find((b): b is Anthropic.Beta.BetaTextBlock => b.type === "text")?.text;
-    if (!text) return null;
-    const parsed = ReceiptSchema.safeParse(JSON.parse(text));
-    return parsed.success ? parsed.data : null;
-  } catch (error) {
-    if (error instanceof Anthropic.AuthenticationError) console.error("[ia] ANTHROPIC_API_KEY no es válida");
-    else if (error instanceof Anthropic.RateLimitError) console.error("[ia] Límite de uso alcanzado; se llena a mano");
-    else if (error instanceof Anthropic.APIError) console.error(`[ia] Error ${error.status}: ${error.message}`);
-    else console.error("[ia] No se pudo leer el recibo", error);
-    return null;
-  }
+export async function readReceipt(file: AiFile): Promise<ReceiptGuess | null> {
+  return extract({ files: [file], prompt: PROMPT, jsonSchema: JSON_SCHEMA, schema: ReceiptSchema, maxTokens: 4000 });
 }

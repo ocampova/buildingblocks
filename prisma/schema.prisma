@@ -18,6 +18,7 @@ model User {
   createdAt    DateTime    @default(now())
   memberships  Member[]
   tokens       AuthToken[]
+  pushSubs     PushSubscription[]
 }
 
 enum TokenPurpose {
@@ -47,6 +48,10 @@ model Project {
   deposits    CashDeposit[]
   settlements Settlement[]
   attachments Attachment[]
+  suppliers   Supplier[]
+  orders      Order[]
+  /// Número del siguiente pedido (1, 2, 3…)
+  nextOrderNumber Int @default(1)
 }
 
 enum Role {
@@ -74,6 +79,7 @@ model Member {
   settlementsSent  Settlement[]  @relation("SettlementFrom")
   settlementsRecvd Settlement[]  @relation("SettlementTo")
   expensesCreated  Expense[]     @relation("ExpenseCreatedBy")
+  ordersCreated    Order[]       @relation("OrderCreatedBy")
 
   @@unique([projectId, userId])
 }
@@ -92,6 +98,7 @@ model Stage {
   kind      StageKind @default(OBRA)
   budget    Int?
   expenses  Expense[]
+  orders    Order[]
 
   @@index([projectId, position])
 }
@@ -123,6 +130,9 @@ model Expense {
   /// Clave de 50 dígitos de la factura electrónica
   haciendaKey  String?
   notes        String?
+  /// Compra hecha a partir de un pedido de materiales
+  orderId      String?
+  order        Order?        @relation(fields: [orderId], references: [id], onDelete: SetNull)
   createdById  String
   createdBy    Member        @relation("ExpenseCreatedBy", fields: [createdById], references: [id])
   createdAt    DateTime      @default(now())
@@ -206,4 +216,137 @@ model Attachment {
   payment       Payment?     @relation(fields: [paymentId], references: [id], onDelete: Cascade)
   cashDepositId String?
   cashDeposit   CashDeposit? @relation(fields: [cashDepositId], references: [id], onDelete: Cascade)
+  orderId       String?
+  order         Order?       @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  quoteId       String?
+  quote         Quote?       @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+}
+
+// ─── Fase 2: pedidos de materiales y cotizaciones ───────────────────────────
+
+model Supplier {
+  id        String   @id @default(cuid())
+  projectId String
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  name      String
+  phone     String?
+  cedula    String?
+  createdAt DateTime @default(now())
+  quotes    Quote[]
+
+  @@unique([projectId, name])
+}
+
+enum OrderStatus {
+  POR_COTIZAR
+  COTIZADO
+  COMPRADO
+  RECIBIDO
+  CANCELADO
+}
+
+model Order {
+  id           String       @id @default(cuid())
+  projectId    String
+  project      Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  number       Int
+  title        String
+  stageId      String?
+  stage        Stage?       @relation(fields: [stageId], references: [id], onDelete: SetNull)
+  neededBy     DateTime     @db.Date
+  status       OrderStatus  @default(POR_COTIZAR)
+  notes        String?
+  createdById  String
+  createdBy    Member       @relation("OrderCreatedBy", fields: [createdById], references: [id])
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  boughtAt     DateTime?
+  receivedAt   DateTime?
+  receivedNote String?
+  lines        OrderLine[]
+  quotes       Quote[]
+  expenses     Expense[]
+  attachments  Attachment[]
+
+  @@unique([projectId, number])
+  @@index([projectId, status])
+}
+
+model OrderLine {
+  id          String     @id @default(cuid())
+  orderId     String
+  order       Order      @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  position    Int
+  material    String
+  quantity    Float
+  unit        String
+  /// Calidad o marca que espera el constructor
+  quality     String?
+  /// Línea de cotización elegida para comprar
+  chosenId    String?    @unique
+  chosen      QuoteLine? @relation("ChosenLine", fields: [chosenId], references: [id], onDelete: SetNull)
+  quoteLines  QuoteLine[] @relation("QuotedFor")
+}
+
+enum QualityMatch {
+  CUMPLE
+  DISTINTA
+  NO_CLARO
+}
+
+model Quote {
+  id           String       @id @default(cuid())
+  orderId      String
+  order        Order        @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  supplierId   String
+  supplier     Supplier     @relation(fields: [supplierId], references: [id], onDelete: Cascade)
+  date         DateTime     @db.Date
+  currency     String       @default("CRC")
+  exchangeRate Float?
+  /// Días para entregar, si la cotización lo dice
+  deliveryDays Int?
+  /// Costo del transporte en colones (0 si es gratis, null si no lo dice)
+  transport    Int?
+  credit       String?
+  notes        String?
+  readByAi     Boolean      @default(false)
+  createdAt    DateTime     @default(now())
+  lines        QuoteLine[]
+  attachments  Attachment[]
+}
+
+model QuoteLine {
+  id          String       @id @default(cuid())
+  quoteId     String
+  quote       Quote        @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  orderLineId String?
+  orderLine   OrderLine?   @relation("QuotedFor", fields: [orderLineId], references: [id], onDelete: SetNull)
+  description String
+  brand       String?
+  quantity    Float
+  unit        String?
+  /// Precio unitario y total en colones
+  unitPrice   Int
+  total       Int
+  quality     QualityMatch @default(NO_CLARO)
+  qualityNote String?
+  chosenFor   OrderLine?   @relation("ChosenLine")
+}
+
+model PushSubscription {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  endpoint  String   @unique
+  p256dh    String
+  auth      String
+  userAgent String?
+  createdAt DateTime @default(now())
+}
+
+/// Ajustes generados por la aplicación (claves VAPID si no vienen en variables de entorno)
+model AppSetting {
+  key       String   @id
+  value     String
+  createdAt DateTime @default(now())
 }

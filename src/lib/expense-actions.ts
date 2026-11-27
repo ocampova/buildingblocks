@@ -8,6 +8,7 @@ import { requireMoneyMember, requirePartner } from "./auth";
 import { prisma } from "./db";
 import { keyToDate, parseAmount, todayKey } from "./format";
 import { getPartners } from "./data";
+import { checkCashLow } from "./push";
 
 const RECEIPTS: ReceiptType[] = ["FACTURA", "TIQUETE", "NOTA", "COMPROBANTE", "NINGUNO"];
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
@@ -109,6 +110,7 @@ export async function createExpense(projectId: string, _: ActionState, form: For
     return e;
   });
 
+  await checkCashLow(projectId, payments.filter((p) => p.source === "CAJA").reduce((s, p) => s + p.amount, 0), member.userId);
   revalidatePath(`/p/${projectId}`, "layout");
   redirect(`/p/${projectId}/gastos/${expense.id}?guardado=1`);
 }
@@ -155,7 +157,7 @@ export async function deleteExpense(projectId: string, expenseId: string) {
 }
 
 export async function addPayment(projectId: string, expenseId: string, _: ActionState, form: FormData): Promise<ActionState> {
-  await requireMoneyMember(projectId);
+  const member = await requireMoneyMember(projectId);
   const e = await prisma.expense.findFirst({ where: { id: expenseId, projectId }, include: { payments: true } });
   if (!e) return { error: "Ese gasto ya no existe." };
   const pending = e.total - e.payments.reduce((s, p) => s + p.amount, 0);
@@ -176,6 +178,7 @@ export async function addPayment(projectId: string, expenseId: string, _: Action
       }
     }
   });
+  await checkCashLow(projectId, payments.filter((p) => p.source === "CAJA").reduce((s, p) => s + p.amount, 0), member.userId);
   revalidatePath(`/p/${projectId}`, "layout");
   return { ok: "Pago registrado." };
 }

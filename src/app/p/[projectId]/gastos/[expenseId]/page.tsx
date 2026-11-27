@@ -25,6 +25,7 @@ export default async function ExpenseDetail({ params, searchParams }: { params: 
     include: {
       stage: true,
       lines: true,
+      order: { select: { id: true, number: true, title: true } },
       createdBy: { include: { user: { select: { name: true } } } },
       payments: { include: { partner: { include: { user: { select: { name: true } } } }, attachments: { select: { id: true, mime: true, filename: true } } }, orderBy: { date: "asc" } },
       attachments: { select: { id: true, mime: true, filename: true }, orderBy: { createdAt: "asc" } },
@@ -65,6 +66,14 @@ export default async function ExpenseDetail({ params, searchParams }: { params: 
           {e.dueDate && pending > 0 && <Badge tone="warn">Vence el {dateLabel(e.dueDate)}</Badge>}
         </div>
         {e.supplier && <p className="mt-3 text-[15px] text-ink-2">Pagado a <span className="font-semibold text-ink">{e.supplier}</span></p>}
+        {e.order && (
+          <p className="mt-1 text-[15px] text-ink-2">
+            Compra del{" "}
+            <Link href={`/p/${projectId}/pedidos/${e.order.id}`} className="font-semibold text-brand underline">
+              pedido {e.order.number}: {e.order.title}
+            </Link>
+          </p>
+        )}
         {e.originalUsdCents && <p className="mt-1 text-[14px] text-ink-3">Factura en dólares: US${(e.originalUsdCents / 100).toLocaleString("en-US")} al tipo de cambio {e.exchangeRate}.</p>}
       </header>
 

@@ -12,7 +12,7 @@ const d = (s: string) => new Date(`${s}T00:00:00.000Z`);
 
 async function main() {
   if (process.env.RAILWAY_ENVIRONMENT || process.env.NODE_ENV === "production") throw new Error("No corra la demostración en producción.");
-  await prisma.$transaction([prisma.attachment.deleteMany(), prisma.project.deleteMany(), prisma.authToken.deleteMany(), prisma.user.deleteMany()]);
+  await prisma.$transaction([prisma.attachment.deleteMany(), prisma.project.deleteMany(), prisma.authToken.deleteMany(), prisma.pushSubscription.deleteMany(), prisma.user.deleteMany()]);
   const hash = await bcrypt.hash("demo1234", 10);
   const [a, b, admin, builder] = await Promise.all([
     prisma.user.create({ data: { name: "Andrés Mora", email: "andres@demo.cr", passwordHash: hash } }),
@@ -70,6 +70,51 @@ async function main() {
       { projectId: p.id, partnerId: mb.id, date: d("2026-11-01"), amount: 250_000 },
     ],
   });
+  // Pedidos de materiales (ficticios)
+  const mr = await prisma.member.findFirstOrThrow({ where: { projectId: p.id, role: "CONSTRUCTOR" } });
+  const mk = async (number: number, title: string, neededBy: string, st: string, status: "POR_COTIZAR" | "COTIZADO", lines: [string, number, string, string | null][]) =>
+    prisma.order.create({
+      data: { projectId: p.id, number, title, neededBy: d(neededBy), stageId: stage(st), status, createdById: mr.id, lines: { create: lines.map(([material, quantity, unit, quality], i) => ({ position: i, material, quantity, unit, quality })) } },
+      include: { lines: { orderBy: { position: "asc" } } },
+    });
+  await prisma.project.update({ where: { id: p.id }, data: { nextOrderNumber: 4 } });
+  await mk(1, "Bloques para paredes del primer piso", "2026-12-08", "Mampostería", "POR_COTIZAR", [
+    ["Block de 15 cm", 800, "unidad", "Clase A"],
+    ["Arena de tajo", 6, "m³", null],
+    ["Cemento gris 50 kg", 40, "saco", "Holcim"],
+  ]);
+  const o2 = await mk(2, "Columnas planta baja", "2026-11-30", "Estructura", "COTIZADO", [
+    ["Varilla #4 grado 40", 120, "varilla", "Grado 40"],
+    ["Varilla #3 grado 40", 80, "varilla", "Grado 40"],
+    ["Alambre negro", 3, "rollo", null],
+    ["Cemento gris 50 kg", 30, "saco", "Holcim"],
+  ]);
+  await mk(3, "Tubería de desagüe", "2026-12-15", "Fontanería", "POR_COTIZAR", [["Tubo PVC 4 pulgadas SDR 41", 12, "unidad", null]]);
+  const supA = await prisma.supplier.create({ data: { projectId: p.id, name: "Depósito El Roble" } });
+  const supB = await prisma.supplier.create({ data: { projectId: p.id, name: "Ferretería La Esquina" } });
+  const [v4, v3, al, ce] = o2.lines;
+  await prisma.quote.create({
+    data: {
+      orderId: o2.id, supplierId: supA.id, date: d("2026-11-26"), deliveryDays: 2, transport: 18000, credit: "Contado",
+      lines: { create: [
+        { orderLineId: v4.id, description: v4.material, quantity: 120, unit: "varilla", unitPrice: 4650, total: 558000, quality: "CUMPLE", brand: "ArcelorMittal" },
+        { orderLineId: v3.id, description: v3.material, quantity: 80, unit: "varilla", unitPrice: 2890, total: 231200, quality: "CUMPLE", brand: "ArcelorMittal" },
+        { orderLineId: al.id, description: al.material, quantity: 3, unit: "rollo", unitPrice: 21500, total: 64500, quality: "CUMPLE" },
+        { orderLineId: ce.id, description: ce.material, quantity: 30, unit: "saco", unitPrice: 6450, total: 193500, quality: "CUMPLE", brand: "Holcim" },
+      ] },
+    },
+  });
+  await prisma.quote.create({
+    data: {
+      orderId: o2.id, supplierId: supB.id, date: d("2026-11-27"), deliveryDays: 1, transport: 0, credit: "15 días",
+      lines: { create: [
+        { orderLineId: v4.id, description: v4.material, quantity: 120, unit: "varilla", unitPrice: 4480, total: 537600, quality: "CUMPLE" },
+        { orderLineId: v3.id, description: v3.material, quantity: 80, unit: "varilla", unitPrice: 2950, total: 236000, quality: "CUMPLE" },
+        { orderLineId: ce.id, description: ce.material, quantity: 30, unit: "saco", unitPrice: 6200, total: 186000, quality: "DISTINTA", brand: "Cemex", qualityNote: "Cotiza Cemex; se pidió Holcim" },
+      ] },
+    },
+  });
+
   console.log(`Demo lista. Proyecto ${p.id}. Entre con andres@demo.cr / demo1234 (también daniel@, laura@, rafael@).`);
 }
 

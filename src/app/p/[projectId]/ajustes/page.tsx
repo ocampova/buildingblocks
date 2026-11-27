@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { ArrowDown, ArrowUp, Trash2 } from "lucide-react";
 import { ActionForm } from "@/components/action-form";
+import { PushSettings } from "@/components/push-prompt";
+import { vapidPublicKey } from "@/lib/push";
 import { InviteForm } from "@/components/invite-link";
 import { Badge, Button, Card, Field, Input, Notice, PageHeader, PayerChip, SectionTitle, Select } from "@/components/ui";
 import { isPartner, requireMember } from "@/lib/auth";
@@ -190,6 +192,11 @@ export default async function Settings({ params, searchParams }: { params: Promi
           </Card>
         </>
       )}
+
+      <SectionTitle>Avisos en este dispositivo</SectionTitle>
+      <Card className="p-4 sm:p-5">
+        <PushSettings vapidKey={await vapidPublicKey()} />
+      </Card>
 
       <form action="/salir" method="post" className="mt-10">
         <Button variant="secondary" type="submit">Salir de Obra</Button>
