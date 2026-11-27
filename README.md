@@ -11,7 +11,7 @@ Herramienta web para el celular y la computadora que controla los gastos de una 
 
 - **Registrar un gasto en una pantalla:** foto, PDF o XML del respaldo, monto, quién pagó (un socio, la caja chica, mitad y mitad, o queda por pagar) y etapa.
 - **Factura electrónica:** el XML de Hacienda llena el gasto solo y no deja registrar la misma factura dos veces.
-- **Fotos de recibos con IA (opcional):** con `ANTHROPIC_API_KEY`, la foto llena el monto, el proveedor y la fecha. Sin la clave, se llena a mano.
+- **Fotos de recibos con IA (opcional):** con `OPENAI_API_KEY` (o `ANTHROPIC_API_KEY`), la foto llena el monto, el proveedor y la fecha. Sin clave, se llena a mano.
 - **Cuentas entre socios:** lo que puso cada uno, quién le debe a quién, transferencias para emparejar y caja chica con recarga sugerida que además empareja.
 - **Resumen:** gastado por etapa, por pagar y vencimientos, porcentaje con factura electrónica.
 - **Ajustes:** invitar personas por enlace (WhatsApp o copiar), roles, porcentaje de cada socio, etapas y presupuestos, mínimo de la caja.
@@ -46,7 +46,7 @@ Pruebas: `npm test` (cuentas entre socios y lectura del XML de Hacienda).
 ## Desplegar en Railway
 
 1. Nuevo proyecto con este repositorio y un servicio de PostgreSQL.
-2. Variables del servicio de la app: `DATABASE_URL=${{Postgres.DATABASE_URL}}`, `AUTH_SECRET=${{secret(48)}}` y, si se quiere la lectura de fotos, listas y cotizaciones, `ANTHROPIC_API_KEY`. Las claves de los avisos se generan solas.
+2. Variables del servicio de la app: `DATABASE_URL=${{Postgres.DATABASE_URL}}`, `AUTH_SECRET=${{secret(48)}}` y, si se quiere la lectura de fotos, listas y cotizaciones, `OPENAI_API_KEY` (modelo por defecto `gpt-5.5`, se cambia con `OPENAI_MODEL`) o `ANTHROPIC_API_KEY`. Las claves de los avisos se generan solas.
 3. `railway.json` ya define la compilación y el arranque; las migraciones corren solas al arrancar.
 
 Los respaldos (fotos, PDF, XML) se guardan en la base de datos por ahora.

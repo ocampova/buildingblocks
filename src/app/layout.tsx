@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   description: "Gastos de la construcción por etapa, caja chica y cuentas entre socios.",
   applicationName: "Obra",
   appleWebApp: { capable: true, title: "Obra", statusBarStyle: "default" },
-  icons: { icon: "/icon.svg", apple: "/icon-192.png" },
+  icons: { icon: "/icon.svg", apple: "/apple-touch-icon.png" },
 };
 
 export const viewport: Viewport = {
