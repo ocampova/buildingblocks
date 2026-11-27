@@ -1,0 +1,672 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-27T17:08:36+00:00",
+  "title": "Design System: Obra",
+  "extensions": {
+    "colorMeta": {
+      "brand": {
+        "role": "primary",
+        "displayName": "Ten-Thousand Navy",
+        "canonical": "oklch(35.4% 0.099 258.4)",
+        "tonalRamp": [
+          "#00072a",
+          "#04234f",
+          "#1f4174",
+          "#436291",
+          "#6884ae",
+          "#8ea7cb",
+          "#b7cbe9",
+          "#e1f0ff"
+        ],
+        "cssVar": "--color-brand"
+      },
+      "brand-strong": {
+        "role": "primary",
+        "displayName": "Deep Note Navy",
+        "canonical": "oklch(28.9% 0.080 258.4)",
+        "tonalRamp": [
+          "#000827",
+          "#0a244a",
+          "#294268",
+          "#4b6286",
+          "#6e84a4",
+          "#94a6c2",
+          "#bbcae2",
+          "#e3f0ff"
+        ],
+        "cssVar": "--color-brand-strong"
+      },
+      "brand-soft": {
+        "role": "primary",
+        "displayName": "Navy Wash",
+        "canonical": "oklch(93.5% 0.017 259.4)",
+        "tonalRamp": [
+          "#090b0e",
+          "#232529",
+          "#3f4247",
+          "#5d6168",
+          "#7e838a",
+          "#a0a5ae",
+          "#c3cad3",
+          "#e8effa"
+        ],
+        "cssVar": "--color-brand-soft"
+      },
+      "note-0": {
+        "role": "secondary",
+        "displayName": "Colón Green",
+        "canonical": "oklch(48.5% 0.100 160.8)",
+        "tonalRamp": [
+          "#001104",
+          "#002f19",
+          "#004f33",
+          "#1c724e",
+          "#529272",
+          "#7fb397",
+          "#acd4be",
+          "#daf7e6"
+        ],
+        "cssVar": "--color-note-0"
+      },
+      "note-0-soft": {
+        "role": "secondary",
+        "displayName": "Colón Green Soft",
+        "canonical": "oklch(93.6% 0.023 165.8)",
+        "tonalRamp": [
+          "#080c0a",
+          "#202724",
+          "#3b4440",
+          "#59645f",
+          "#798680",
+          "#9aa9a2",
+          "#bdcec6",
+          "#e1f4eb"
+        ],
+        "cssVar": "--color-note-0-soft"
+      },
+      "note-1": {
+        "role": "secondary",
+        "displayName": "Ochre Note",
+        "canonical": "oklch(51.9% 0.108 70.9)",
+        "tonalRamp": [
+          "#190600",
+          "#3a1d00",
+          "#5f3800",
+          "#865504",
+          "#a6783d",
+          "#c59d6e",
+          "#e3c39e",
+          "#ffeace"
+        ],
+        "cssVar": "--color-note-1"
+      },
+      "note-1-soft": {
+        "role": "secondary",
+        "displayName": "Ochre Note Soft",
+        "canonical": "oklch(93.6% 0.032 81.0)",
+        "tonalRamp": [
+          "#0e0b05",
+          "#29241c",
+          "#474137",
+          "#686054",
+          "#8a8172",
+          "#aea492",
+          "#d3c8b4",
+          "#faedd7"
+        ],
+        "cssVar": "--color-note-1-soft"
+      },
+      "note-2": {
+        "role": "secondary",
+        "displayName": "Note Red",
+        "canonical": "oklch(50.6% 0.166 27.1)",
+        "tonalRamp": [
+          "#250000",
+          "#4e0002",
+          "#7a1514",
+          "#aa2d29",
+          "#c95b52",
+          "#e5877d",
+          "#ffb3a9",
+          "#ffdfd7"
+        ],
+        "cssVar": "--color-note-2"
+      },
+      "note-2-soft": {
+        "role": "secondary",
+        "displayName": "Note Red Soft",
+        "canonical": "oklch(92.0% 0.027 23.4)",
+        "tonalRamp": [
+          "#100909",
+          "#2b2322",
+          "#4a3f3e",
+          "#6b5d5c",
+          "#8e7e7c",
+          "#b3a09e",
+          "#d9c3c1",
+          "#ffe8e6"
+        ],
+        "cssVar": "--color-note-2-soft"
+      },
+      "note-3": {
+        "role": "secondary",
+        "displayName": "Note Blue",
+        "canonical": "oklch(47.0% 0.132 257.8)",
+        "tonalRamp": [
+          "#00072a",
+          "#002252",
+          "#13407e",
+          "#2e60a8",
+          "#5883c2",
+          "#82a7dc",
+          "#aecbf6",
+          "#dbf0ff"
+        ],
+        "cssVar": "--color-note-3"
+      },
+      "note-3-soft": {
+        "role": "secondary",
+        "displayName": "Note Blue Soft",
+        "canonical": "oklch(92.5% 0.023 258.4)",
+        "tonalRamp": [
+          "#090b0f",
+          "#22252b",
+          "#3e4249",
+          "#5c626a",
+          "#7c838d",
+          "#9ea6b2",
+          "#c1cad7",
+          "#e5effe"
+        ],
+        "cssVar": "--color-note-3-soft"
+      },
+      "note-4": {
+        "role": "secondary",
+        "displayName": "Note Orange",
+        "canonical": "oklch(51.7% 0.143 44.1)",
+        "tonalRamp": [
+          "#210000",
+          "#470e00",
+          "#712700",
+          "#9e400a",
+          "#bf673f",
+          "#db906f",
+          "#f7b99e",
+          "#ffe3cf"
+        ],
+        "cssVar": "--color-note-4"
+      },
+      "note-4-soft": {
+        "role": "secondary",
+        "displayName": "Note Orange Soft",
+        "canonical": "oklch(92.6% 0.027 53.1)",
+        "tonalRamp": [
+          "#0f0a07",
+          "#2b231f",
+          "#49403a",
+          "#6a5f58",
+          "#8d7f77",
+          "#b1a198",
+          "#d7c5ba",
+          "#feeade"
+        ],
+        "cssVar": "--color-note-4-soft"
+      },
+      "caja": {
+        "role": "tertiary",
+        "displayName": "Caja Violet",
+        "canonical": "oklch(45.9% 0.128 295.7)",
+        "tonalRamp": [
+          "#100127",
+          "#2a174d",
+          "#483177",
+          "#68509e",
+          "#8875b9",
+          "#a99bd5",
+          "#ccc1f0",
+          "#f1e9ff"
+        ],
+        "cssVar": "--color-caja"
+      },
+      "caja-soft": {
+        "role": "tertiary",
+        "displayName": "Caja Violet Soft",
+        "canonical": "oklch(92.1% 0.025 303.5)",
+        "tonalRamp": [
+          "#0c0a0f",
+          "#26242a",
+          "#434049",
+          "#635f69",
+          "#85808c",
+          "#a8a2b0",
+          "#ccc6d6",
+          "#f2ebfd"
+        ],
+        "cssVar": "--color-caja-soft"
+      },
+      "ground": {
+        "role": "neutral",
+        "displayName": "Sun Paper",
+        "canonical": "oklch(96.7% 0.005 95.1)",
+        "tonalRamp": [
+          "#0b0b0a",
+          "#252524",
+          "#424240",
+          "#62615f",
+          "#838280",
+          "#a6a5a2",
+          "#cac9c6",
+          "#efeeea"
+        ],
+        "cssVar": "--color-ground"
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "White Sheet",
+        "canonical": "oklch(100.0% 0.000 89.9)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#a5a5a5",
+          "#c9c9c9",
+          "#eeeeee"
+        ],
+        "cssVar": "--color-surface"
+      },
+      "sunken": {
+        "role": "neutral",
+        "displayName": "Pressed Paper",
+        "canonical": "oklch(93.9% 0.008 98.9)",
+        "tonalRamp": [
+          "#0b0b0a",
+          "#252523",
+          "#42423f",
+          "#62615e",
+          "#83827e",
+          "#a6a5a0",
+          "#cac9c4",
+          "#f0efe9"
+        ],
+        "cssVar": "--color-sunken"
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "oklch(89.3% 0.011 100.8)",
+        "tonalRamp": [
+          "#0b0b09",
+          "#262522",
+          "#43423e",
+          "#62615d",
+          "#83827d",
+          "#a6a59f",
+          "#cac9c2",
+          "#f0efe7"
+        ],
+        "cssVar": "--color-line"
+      },
+      "line-strong": {
+        "role": "neutral",
+        "displayName": "Firm Line",
+        "canonical": "oklch(81.2% 0.014 102.1)",
+        "tonalRamp": [
+          "#0c0b08",
+          "#262521",
+          "#43423d",
+          "#62615b",
+          "#83837b",
+          "#a6a59c",
+          "#cbcac0",
+          "#f0efe6"
+        ],
+        "cssVar": "--color-line-strong"
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "oklch(23.1% 0.019 172.0)",
+        "tonalRamp": [
+          "#040e0a",
+          "#1c2824",
+          "#3a4541",
+          "#5a6460",
+          "#7b8581",
+          "#9fa7a4",
+          "#c4cbc8",
+          "#eaf0ee"
+        ],
+        "cssVar": "--color-ink"
+      },
+      "ink-2": {
+        "role": "neutral",
+        "displayName": "Ink Two",
+        "canonical": "oklch(44.1% 0.013 158.4)",
+        "tonalRamp": [
+          "#080c0a",
+          "#212723",
+          "#3d4440",
+          "#5c635f",
+          "#7d8480",
+          "#a1a7a3",
+          "#c6cac7",
+          "#ecefed"
+        ],
+        "cssVar": "--color-ink-2"
+      },
+      "ink-3": {
+        "role": "neutral",
+        "displayName": "Ink Three",
+        "canonical": "oklch(50.3% 0.012 154.9)",
+        "tonalRamp": [
+          "#090c0a",
+          "#222623",
+          "#3e4440",
+          "#5c635e",
+          "#7e8480",
+          "#a1a7a3",
+          "#c6cac7",
+          "#ecefed"
+        ],
+        "cssVar": "--color-ink-3"
+      },
+      "danger": {
+        "role": "status",
+        "displayName": "Overdue Red",
+        "canonical": "oklch(50.0% 0.182 29.5)",
+        "tonalRamp": [
+          "#270000",
+          "#510000",
+          "#7f0602",
+          "#b12117",
+          "#cf5748",
+          "#e98576",
+          "#ffb2a4",
+          "#ffded4"
+        ],
+        "cssVar": "--color-danger"
+      },
+      "danger-soft": {
+        "role": "status",
+        "displayName": "Overdue Red Soft",
+        "canonical": "oklch(93.7% 0.026 26.5)",
+        "tonalRamp": [
+          "#0f0909",
+          "#2b2322",
+          "#4a3f3e",
+          "#6b5e5c",
+          "#8e7e7c",
+          "#b2a09e",
+          "#d8c4c1",
+          "#ffe8e5"
+        ],
+        "cssVar": "--color-danger-soft"
+      },
+      "warn": {
+        "role": "status",
+        "displayName": "Due Amber",
+        "canonical": "oklch(50.4% 0.108 71.5)",
+        "tonalRamp": [
+          "#190600",
+          "#3a1d00",
+          "#5f3800",
+          "#865500",
+          "#a5793f",
+          "#c39e70",
+          "#e2c4a0",
+          "#ffebd1"
+        ],
+        "cssVar": "--color-warn"
+      },
+      "warn-soft": {
+        "role": "status",
+        "displayName": "Due Amber Soft",
+        "canonical": "oklch(94.7% 0.046 86.5)",
+        "tonalRamp": [
+          "#0f0b03",
+          "#2a2418",
+          "#484132",
+          "#69604e",
+          "#8b816b",
+          "#b0a48a",
+          "#d5c8aa",
+          "#fcedcc"
+        ],
+        "cssVar": "--color-warn-soft"
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Headline amount of a screen; wide Archivo at 118% stretch, 40px rising to 46px."
+      },
+      "figure": {
+        "displayName": "Figure",
+        "purpose": "Secondary standalone amounts in wide Archivo (caja balance, partner contributions)."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Page titles, 26px rising to 30px."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Section titles."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Running text and descriptions."
+      },
+      "row-amount": {
+        "displayName": "Row amount",
+        "purpose": "Description and amount in list rows; tabular figures."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Field labels, legends; buttons at 15px."
+      },
+      "meta": {
+        "displayName": "Meta",
+        "purpose": "Stage/payer line, hints, relative dates."
+      },
+      "tab": {
+        "displayName": "Tab",
+        "purpose": "Bottom tab bar labels."
+      }
+    },
+    "shadows": [
+      {
+        "name": "raise",
+        "value": "0 1px 2px rgb(20 32 28 / 0.06), 0 4px 12px rgb(20 32 28 / 0.06)",
+        "purpose": "Primary buttons, the netting card, the auth card, small floating remove controls."
+      },
+      {
+        "name": "float",
+        "value": "0 6px 16px rgb(15 42 82 / 0.22), 0 2px 4px rgb(15 42 82 / 0.16)",
+        "purpose": "The raised Registrar action in the mobile tab bar only, with a 4px ground-colour ring."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out-expo",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Easing for bar growth and content rise."
+      },
+      {
+        "name": "grow-x",
+        "value": "240ms ease-out-expo, scaleX 0 to 1 from the left, 90ms stagger per segment",
+        "purpose": "Contribution and stage bar segments grow once on load; off under reduced motion."
+      },
+      {
+        "name": "rise",
+        "value": "360ms ease-out-expo, opacity 0 and translateY 6px to rest",
+        "purpose": "Entrance of arriving content; off under reduced motion."
+      },
+      {
+        "name": "state",
+        "value": "150ms",
+        "purpose": "Background, border and 1px press transitions on controls."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px",
+        "purpose": "Two- and three-column choice grids."
+      },
+      {
+        "name": "lg",
+        "value": "1024px",
+        "purpose": "Bottom tab bar and top bar give way to the 256px left rail; content widens to 1152px."
+      }
+    ],
+    "patterns": [
+      {
+        "name": "guilloche",
+        "value": "SVG wave-line tile 240x64, stroke #173a6e at 0.14 opacity, 0.8 width",
+        "purpose": "Netting card only."
+      }
+    ],
+    "focus": {
+      "value": "2.5px solid brand outline, 2px offset; inputs use a brand border plus 3px brand ring at 15%",
+      "purpose": "Global keyboard focus."
+    }
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one navy action per screen.",
+      "html": "<button class=\"ds-btn ds-btn-primary\">Guardar gasto</button>",
+      "css": ".ds-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 16px;border-radius:10px;font:600 15px/1.2 var(--font-geist, 'Geist'), ui-sans-serif, system-ui, sans-serif;border:1px solid transparent;cursor:pointer;transition:background-color 150ms,border-color 150ms,transform 150ms} .ds-btn-primary{background:var(--color-brand);color:#fff;box-shadow:0 1px 2px rgb(20 32 28 / 0.06),0 4px 12px rgb(20 32 28 / 0.06)} .ds-btn-primary:hover{background:var(--color-brand-strong)} .ds-btn-primary:active{transform:translateY(1px)} .ds-btn:focus-visible{outline:2.5px solid var(--color-brand);outline-offset:2px}"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Quiet alternative action on white with a firm border.",
+      "html": "<button class=\"ds-btn2\">Cancelar</button>",
+      "css": ".ds-btn2{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 16px;border-radius:10px;font:600 15px/1.2 var(--font-geist, 'Geist'), ui-sans-serif, system-ui, sans-serif;background:var(--color-surface);color:var(--color-ink);border:1px solid var(--color-line-strong);cursor:pointer;transition:background-color 150ms,border-color 150ms,transform 150ms} .ds-btn2:hover{border-color:var(--color-ink-3);background:color-mix(in srgb,var(--color-sunken) 60%,var(--color-surface))} .ds-btn2:active{transform:translateY(1px)} .ds-btn2:focus-visible{outline:2.5px solid var(--color-brand);outline-offset:2px}"
+    },
+    {
+      "name": "Register Action",
+      "kind": "custom",
+      "refersTo": "register-fab",
+      "description": "Raised navy circle at the centre of the mobile tab bar.",
+      "html": "<a class=\"ds-fab\" href=\"#\" aria-label=\"Registrar gasto\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"M12 5v14M5 12h14\"/></svg></a>",
+      "css": ".ds-fab{display:grid;place-items:center;width:60px;height:60px;border-radius:9999px;background:var(--color-brand);color:#fff;box-shadow:0 6px 16px rgb(15 42 82 / 0.22),0 2px 4px rgb(15 42 82 / 0.16),0 0 0 4px var(--color-ground);transition:transform 150ms} .ds-fab svg{width:28px;height:28px} .ds-fab:active{transform:scale(.95)} .ds-fab:focus-visible{outline:2.5px solid var(--color-brand);outline-offset:6px}"
+    },
+    {
+      "name": "Amount Input",
+      "kind": "input",
+      "refersTo": "input-amount",
+      "description": "Large colón amount field with inset ₡ prefix and tabular figures.",
+      "html": "<label class=\"ds-field\"><span class=\"ds-label\">Monto</span><span class=\"ds-amt\"><span class=\"ds-cur\" aria-hidden=\"true\">₡</span><input inputmode=\"numeric\" placeholder=\"0\" value=\"48.500\"></span></label>",
+      "css": ".ds-field{display:block;font-family:var(--font-geist, 'Geist'), ui-sans-serif, system-ui, sans-serif} .ds-label{display:block;margin-bottom:6px;font-weight:600;font-size:14px;color:var(--color-ink)} .ds-amt{position:relative;display:block} .ds-cur{position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:26px;font-weight:600;color:var(--color-ink-3)} .ds-amt input{display:block;width:100%;min-height:64px;padding:0 14px 0 40px;border:1px solid var(--color-line-strong);border-radius:10px;background:var(--color-surface);color:var(--color-ink);font:600 30px/1 var(--font-geist, 'Geist'), ui-sans-serif, system-ui, sans-serif;letter-spacing:-0.02em;font-variant-numeric:tabular-nums;caret-color:var(--color-brand);transition:border-color 150ms,box-shadow 150ms} .ds-amt input:focus{outline:none;border-color:var(--color-brand);box-shadow:0 0 0 3px color-mix(in srgb,var(--color-brand) 15%,transparent)}"
+    },
+    {
+      "name": "Payer Choice",
+      "kind": "chip",
+      "refersTo": "payer-chip",
+      "description": "Who paid: payer chips in banknote colours, selected tile tinted with that payer's soft colour.",
+      "html": "<div class=\"ds-pay\"><button class=\"ds-pc\" aria-pressed=\"true\"><span class=\"ds-chip ds-n0\">AM</span>Andrés</button><button class=\"ds-pc\" aria-pressed=\"false\"><span class=\"ds-chip ds-n1\">LM</span>Luis</button><button class=\"ds-pc\" aria-pressed=\"false\"><span class=\"ds-chip ds-cj\">CC</span>Caja chica</button></div>",
+      "css": ".ds-pay{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;font-family:var(--font-geist, 'Geist'), ui-sans-serif, system-ui, sans-serif} .ds-pc{display:flex;align-items:center;gap:10px;min-height:48px;padding:0 12px;border:1px solid var(--color-line-strong);border-radius:10px;background:var(--color-surface);color:var(--color-ink);font:600 14.5px/1.2 var(--font-geist, 'Geist'), ui-sans-serif, system-ui, sans-serif;cursor:pointer;transition:border-color 150ms,background-color 150ms} .ds-pc:hover{border-color:var(--color-ink-3)} .ds-pc[aria-pressed=true]{border-color:var(--color-ink);box-shadow:0 0 0 2px color-mix(in srgb,var(--color-ink) 80%,transparent);background:var(--color-note-0-soft)} .ds-pc:focus-visible{outline:2.5px solid var(--color-brand);outline-offset:2px} .ds-chip{display:inline-grid;place-items:center;flex-shrink:0;width:28px;height:28px;border-radius:9999px;color:#fff;font-weight:600;font-size:11.5px;letter-spacing:-0.01em} .ds-n0{background:var(--color-note-0)} .ds-n1{background:var(--color-note-1)} .ds-cj{background:var(--color-caja)}"
+    },
+    {
+      "name": "Netting Card",
+      "kind": "card",
+      "refersTo": "netting-card",
+      "description": "Signature: who owes whom as a sentence, guilloche, and the contribution bar with the fair-share notch.",
+      "html": "<section class=\"ds-net\"><p class=\"ds-lead\">Luis le debe a usted</p><p class=\"ds-big\">₡1.000.000</p><div class=\"ds-bar\"><div class=\"ds-track\"><span class=\"ds-seg ds-n0\" style=\"width:62%\"></span><span class=\"ds-seg ds-n1 ds-seam\" style=\"width:38%\"></span></div><span class=\"ds-notch\" style=\"left:50%\"></span></div><div class=\"ds-who\"><span>Andrés · 50 %<b>₡6.200.000</b></span><span class=\"ds-r\">Luis · 50 %<b>₡3.800.000</b></span></div><button class=\"ds-btn-n\">Emparejar cuentas</button></section>",
+      "css": ".ds-net{position:relative;overflow:hidden;padding:20px;border-radius:14px;border:1px solid color-mix(in srgb,var(--color-brand) 15%,transparent);background-color:color-mix(in srgb,var(--color-brand-soft) 55%,#fff);background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='64' viewBox='0 0 240 64'%3E%3Cg fill='none' stroke='%23173a6e' stroke-opacity='.14' stroke-width='.8'%3E%3Cpath d='M0 32c20-26 40-26 60 0s40 26 60 0 40-26 60 0 40 26 60 0'/%3E%3Cpath d='M0 32c20-10 40-10 60 0s40 10 60 0 40-10 60 0 40 10 60 0'/%3E%3Cpath d='M0 32c20 26 40 26 60 0s40-26 60 0 40 26 60 0 40-26 60 0'/%3E%3Cpath d='M0 32c20 10 40 10 60 0s40-10 60 0 40 10 60 0 40-10 60 0'/%3E%3C/g%3E%3C/svg%3E\");background-size:240px 64px;box-shadow:0 1px 2px rgb(20 32 28 / 0.06),0 4px 12px rgb(20 32 28 / 0.06);font-family:var(--font-geist, 'Geist'), ui-sans-serif, system-ui, sans-serif;color:var(--color-ink)} .ds-lead{margin:0;font-size:15px;font-weight:500;color:var(--color-ink-2)} .ds-big{margin:4px 0 0;font:600 40px/1 var(--font-archivo, 'Archivo'), var(--font-geist, 'Geist'), ui-sans-serif, sans-serif;font-stretch:118%;letter-spacing:-0.02em;font-variant-numeric:tabular-nums lining-nums;color:var(--color-brand-strong)} .ds-bar{position:relative;margin-top:20px} .ds-track{display:flex;height:14px;overflow:hidden;border-radius:9999px;background:var(--color-sunken)} .ds-seg{height:100%;transform-origin:left center;animation:ds-grow 240ms cubic-bezier(0.16,1,0.3,1) both} .ds-seam{border-left:2px solid #fff;animation-delay:90ms} .ds-n0{background:var(--color-note-0)} .ds-n1{background:var(--color-note-1)} .ds-notch{position:absolute;top:-4px;bottom:-4px;width:2px;transform:translateX(-50%);border-radius:9999px;background:var(--color-ink)} .ds-who{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px;font-size:13.5px;color:var(--color-ink-2)} .ds-who b{display:block;font:600 15.5px/1.3 var(--font-archivo, 'Archivo'), var(--font-geist, 'Geist'), ui-sans-serif, sans-serif;font-stretch:118%;font-variant-numeric:tabular-nums;color:var(--color-ink)} .ds-r{text-align:right} .ds-btn-n{margin-top:20px;min-height:44px;padding:0 16px;border:0;border-radius:10px;background:var(--color-brand);color:#fff;font:600 15px/1 var(--font-geist, 'Geist'), ui-sans-serif, system-ui, sans-serif;cursor:pointer;transition:background-color 150ms} .ds-btn-n:hover{background:var(--color-brand-strong)} .ds-btn-n:focus-visible{outline:2.5px solid var(--color-brand);outline-offset:2px} @keyframes ds-grow{from{transform:scaleX(0)}to{transform:scaleX(1)}} @media (prefers-reduced-motion:reduce){.ds-seg{animation:none}}"
+    },
+    {
+      "name": "Expense Row",
+      "kind": "custom",
+      "refersTo": "card",
+      "description": "One row anatomy at every width: payer chip, description over stage and payer, amount over date or owed state.",
+      "html": "<ul class=\"ds-list\"><li><a class=\"ds-row\" href=\"#\"><span class=\"ds-chip ds-n0\">AM</span><span class=\"ds-mid\"><b>Cemento y varilla para zapatas</b><small>Cimientos · Andrés</small></span><span class=\"ds-end\"><b>₡184.300</b><small>Hoy</small></span></a></li><li><a class=\"ds-row\" href=\"#\"><span class=\"ds-chip ds-cj\">CC</span><span class=\"ds-mid\"><b>Vagonetas de lastre</b><small>Movimiento de tierra · Caja chica, parcial</small></span><span class=\"ds-end\"><b>₡240.000</b><small class=\"ds-owe\">Debe ₡90.000</small></span></a></li></ul>",
+      "css": ".ds-list{list-style:none;margin:0;padding:0;border:1px solid var(--color-line);border-radius:14px;background:var(--color-surface);overflow:hidden;font-family:var(--font-geist, 'Geist'), ui-sans-serif, system-ui, sans-serif} .ds-list li+li{border-top:1px solid var(--color-line)} .ds-row{display:flex;align-items:center;gap:12px;padding:14px 16px;color:var(--color-ink);text-decoration:none;transition:background-color 150ms} .ds-row:hover{background:color-mix(in srgb,var(--color-sunken) 60%,var(--color-surface))} .ds-row:focus-visible{outline:2.5px solid var(--color-brand);outline-offset:-2px} .ds-chip{display:inline-grid;place-items:center;flex-shrink:0;width:36px;height:36px;border-radius:9999px;color:#fff;font-weight:600;font-size:13px} .ds-n0{background:var(--color-note-0)} .ds-cj{background:var(--color-caja)} .ds-mid{flex:1;min-width:0} .ds-mid b,.ds-end b{display:block;font-size:15.5px;font-weight:600;line-height:1.375;white-space:nowrap;overflow:hidden;text-overflow:ellipsis} .ds-mid small,.ds-end small{display:block;font-size:13.5px;color:var(--color-ink-3)} .ds-end{text-align:right;flex-shrink:0} .ds-end b{font-variant-numeric:tabular-nums} .ds-end small{font-size:13px} .ds-owe{color:var(--color-warn)!important;font-weight:600}"
+    },
+    {
+      "name": "Stage Chips",
+      "kind": "chip",
+      "refersTo": "stage-chip",
+      "description": "Pick one stage; selected fills navy.",
+      "html": "<div class=\"ds-stages\"><button class=\"ds-st\" aria-pressed=\"false\">Movimiento de tierra</button><button class=\"ds-st\" aria-pressed=\"true\">Cimientos</button><button class=\"ds-st\" aria-pressed=\"false\">Gastos generales</button></div>",
+      "css": ".ds-stages{display:flex;flex-wrap:wrap;gap:8px} .ds-st{min-height:44px;padding:0 16px;border-radius:9999px;border:1px solid var(--color-line-strong);background:var(--color-surface);color:var(--color-ink);font:500 14.5px/1 var(--font-geist, 'Geist'), ui-sans-serif, system-ui, sans-serif;cursor:pointer;transition:background-color 150ms,border-color 150ms} .ds-st:hover{border-color:var(--color-ink-3)} .ds-st[aria-pressed=true]{background:var(--color-brand);border-color:var(--color-brand);color:#fff} .ds-st:focus-visible{outline:2.5px solid var(--color-brand);outline-offset:2px}"
+    },
+    {
+      "name": "Mobile Tab Bar",
+      "kind": "nav",
+      "refersTo": "tab-item",
+      "description": "Fixed bottom bar: Inicio, Gastos, raised Registrar, Cuentas, Resumen.",
+      "html": "<nav class=\"ds-tabs\" aria-label=\"Principal\"><a href=\"#\" aria-current=\"page\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z\"/></svg>Inicio</a><a href=\"#\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 3h14v18l-3-2-2 2-2-2-2 2-2-2-3 2z\"/><path d=\"M9 8h6M9 12h6\"/></svg>Gastos</a><span class=\"ds-mid\"><a class=\"ds-fab2\" href=\"#\" aria-label=\"Registrar gasto\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"M12 5v14M5 12h14\"/></svg></a></span><a href=\"#\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.9\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 3v18M5 7h14M5 7l-3 7a3 3 0 0 0 6 0zM19 7l-3 7a3 3 0 0 0 6 0z\"/></svg>Cuentas</a><a href=\"#\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.9\" stroke-linecap=\"round\"><path d=\"M3 21h18M7 17V9M12 17V5M17 17v-5\"/></svg>Resumen</a></nav>",
+      "css": ".ds-tabs{display:flex;align-items:stretch;justify-content:space-around;border-top:1px solid var(--color-line);background:color-mix(in srgb,var(--color-surface) 95%,transparent);backdrop-filter:blur(8px);font-family:var(--font-geist, 'Geist'), ui-sans-serif, system-ui, sans-serif} .ds-tabs>a{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:60px;font-size:11.5px;font-weight:600;color:var(--color-ink-3);text-decoration:none} .ds-tabs>a svg{width:22px;height:22px} .ds-tabs>a[aria-current=page]{color:var(--color-brand)} .ds-tabs>a:hover{color:var(--color-ink)} .ds-tabs a:focus-visible{outline:2.5px solid var(--color-brand);outline-offset:-2px} .ds-mid{flex:1;display:flex;justify-content:center} .ds-fab2{display:grid;place-items:center;margin-top:-20px;width:60px;height:60px;border-radius:9999px;background:var(--color-brand);color:#fff;box-shadow:0 6px 16px rgb(15 42 82 / 0.22),0 2px 4px rgb(15 42 82 / 0.16),0 0 0 4px var(--color-ground)} .ds-fab2 svg{width:28px;height:28px} .ds-fab2:active{transform:scale(.95)}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Colón Note",
+    "overview": "Money in Obra is always somebody's money. The system borrows the one trick Costa Rican banknotes teach everyone: a note's colour tells you its value before you read the number. Here each source of money (each partner, the petty cash) owns a banknote colour, and that colour follows every colón it put in: the payer chip on an expense row, the segment of the contribution bar, the caja balance pill. Everything else in the interface stays quiet, paper-white and ink, so the source colours are the only colour that means anything.\n\nThe ground is a warm paper white built for outdoor sun at a hardware-store counter, with near-black ink and a single deep navy (the blue of the ₡10.000 note) for the shell and the primary action. Density is relaxed and phone-first: large tap targets (44px minimum, 48px for fields, 60px for the tab bar), one row anatomy for expenses at every width, amounts always the heaviest thing on a row. Large figures are set in wide Archivo, firm and engraved-feeling like a printed denomination; all UI text is Geist. The only ornament is a fine guilloche line pattern, and it lives on exactly one card.\n\nIt refuses the fintech default: grey cards with one brand accent and anonymous totals. It also refuses to feel like accounting software: no ledgers-as-tables, no column grids of debits and credits; a sentence (\"Tu hermano te debe ₡1.000.000\") says who owes whom.",
+    "keyCharacteristics": [
+      "Source colours (banknote family) encode only who paid, never status or category.",
+      "One navy brand for structure and the primary action; it belongs to nobody.",
+      "Warm paper ground, white surfaces, hairline borders, soft ambient shadows only where something is raised.",
+      "Tabular figures for every amount; big amounts in wide Archivo.",
+      "One signature: the contribution bar, a horizontal bar split by source colour.",
+      "Guilloche appears only on the netting card."
+    ],
+    "rules": [
+      {
+        "name": "The Whose Money Rule",
+        "body": "A source colour (note-0 to note-4, caja) appears only where it identifies who paid: payer chip, contribution-bar segment, a source's soft tint, a source legend dot. Status, progress and category use ink tones or the status colours, never a source colour.",
+        "section": "colors"
+      },
+      {
+        "name": "The Nobody's Navy Rule",
+        "body": "Navy is structure and action, never a payer. Anything that belongs to both partners (the netting card, the shell) is navy-toned, not partner-toned.",
+        "section": "colors"
+      },
+      {
+        "name": "The Tabular Everywhere Rule",
+        "body": "Every amount uses tabular, lining figures, in Archivo or Geist; numeric inputs too. Columns of colones must align by digit.",
+        "section": "typography"
+      },
+      {
+        "name": "The Heaviest Number Rule",
+        "body": "On any row or card, the amount is the largest or heaviest type present. Labels never outweigh the money.",
+        "section": "typography"
+      },
+      {
+        "name": "The Sentence Not Ledger Rule",
+        "body": "Balances are read as a sentence lead in ink-2 over a display amount, not as labelled table cells.",
+        "section": "typography"
+      },
+      {
+        "name": "The Raised By Role Rule",
+        "body": "Plain cards and rows have a border and no shadow. A shadow means \"this is the action\" or \"this is the account between you\".",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** give every amount tabular figures, and set any amount that stands alone in wide Archivo (Display or Figure).",
+      "**Do** tag every expense row with its payer chip, in the same anatomy on phone and desktop.",
+      "**Do** keep source colours to payer chips, contribution-bar segments, their soft tints and legend dots.",
+      "**Do** use navy for the one primary action per screen and for anything that belongs to both partners.",
+      "**Do** use ink tones (ink at 70% on a sunken track) for bars that show progress or totals rather than who paid.",
+      "**Do** keep tap targets at 44px or more (48px for fields and payer choices, 60px for tabs).",
+      "**Do** state balances as a sentence over a display amount.",
+      "**Do** let bars grow once on load at 240ms ease-out expo and stay still under reduced motion."
+    ],
+    "donts": [
+      "**Don't** use a partner's or the caja's colour for status, category, charts of totals, or decoration.",
+      "**Don't** give the shell, the netting card or the primary action a partner colour.",
+      "**Don't** place guilloche anywhere but the netting card.",
+      "**Don't** render the expense list as a table on desktop.",
+      "**Don't** put a shadow on ordinary cards or rows.",
+      "**Don't** let a label or title outweigh the amount on the same row."
+    ]
+  }
+}
