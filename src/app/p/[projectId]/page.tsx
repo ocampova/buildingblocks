@@ -93,12 +93,17 @@ export default async function Home({ params }: { params: Promise<{ projectId: st
   const contractsCount = await prisma.contract.count({ where: { projectId } });
   const stageBlock = (
     <>
-      <section aria-label="Presupuesto meta" className="space-y-2">
-        <BudgetCard b={budget} projectId={projectId} compact />
-        <Link href={`/p/${projectId}/contratos`} className="inline-flex min-h-10 items-center gap-1 text-[14.5px] font-semibold text-brand">
-          {contractsCount ? "Contratos y abonos" : "Agregar el contrato del constructor"} <ArrowRight className="size-4" aria-hidden />
-        </Link>
-      </section>
+      {/* En el inicio solo lo que ya tiene datos: sin meta ni contratos, no se muestra nada */}
+      {(budget || contractsCount > 0) && (
+        <section aria-label="Presupuesto meta y contratos" className="space-y-2">
+          {budget && <BudgetCard b={budget} projectId={projectId} compact />}
+          {contractsCount > 0 && (
+            <Link href={`/p/${projectId}/contratos`} className="inline-flex min-h-10 items-center gap-1 text-[14.5px] font-semibold text-brand">
+              Contratos y abonos <ArrowRight className="size-4" aria-hidden />
+            </Link>
+          )}
+        </section>
+      )}
         {stageTotals.length > 0 && (
           <section aria-label="Gastado por etapa">
             <SectionTitle
