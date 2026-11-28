@@ -1,6 +1,6 @@
 import "server-only";
 import { prisma } from "./db";
-import { getDebtSummary } from "./data";
+import { getContracts, getDebtSummary } from "./data";
 import { crc, firstName, todayKey } from "./format";
 import { buildWorkbook, type Column, type Sheet } from "./xlsx";
 
@@ -187,7 +187,29 @@ export async function buildProjectExport(projectId: string) {
     ].sort((a, b) => a.date.getTime() - b.date.getTime()),
   };
 
-  const buffer = await buildWorkbook([gastos, pagos, detalle, porEtapa, cuentas, movimientos]);
+  // ─── Contratos ───
+  const contracts = await getContracts(projectId);
+  const contratos: Sheet = {
+    name: "Contratos",
+    title: "Contratos, adicionales y abonos",
+    subtitle: sub(project.budgetTarget ? `presupuesto meta ${crc(project.budgetTarget)}` : "sin presupuesto meta"),
+    columns: [
+      { header: "Contrato", key: "contract", width: 28 },
+      { header: "Fecha", key: "date", type: "date", width: 12 },
+      { header: "Movimiento", key: "kind", width: 18 },
+      { header: "Detalle", key: "detail", width: 44 },
+      { header: "Monto", key: "amount", type: "crc", width: 16 },
+      { header: "Abonado", key: "paid", type: "crc", width: 16 },
+    ],
+    rows: contracts.flatMap((c) => [
+      { contract: c.contractor, date: c.signedAt, kind: "Contrato", detail: c.description, amount: c.amount, paid: null },
+      ...c.extras.map((x) => ({ contract: c.contractor, date: x.date, kind: "Obra adicional", detail: x.description, amount: x.amount, paid: null })),
+      ...c.expenses.map((e) => ({ contract: c.contractor, date: e.date, kind: "Abono", detail: e.description, amount: null, paid: e.payments.reduce((a, p) => a + p.amount, 0) })),
+      { contract: c.contractor, date: null, kind: "Saldo por pagar", detail: "", amount: c.summary.balance, paid: null },
+    ]),
+  };
+
+  const buffer = await buildWorkbook([gastos, pagos, detalle, porEtapa, cuentas, movimientos, contratos]);
   const filename = `${project.name} - gastos y cuentas ${todayKey()}.xlsx`;
   return { buffer, filename };
 }

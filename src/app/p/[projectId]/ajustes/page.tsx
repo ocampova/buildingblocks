@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ArrowDown, ArrowUp, Trash2 } from "lucide-react";
 import { ActionForm } from "@/components/action-form";
 import { changePassword } from "@/lib/auth-actions";
+import { updateBudgetTarget } from "@/lib/contract-actions";
 import { PushSettings } from "@/components/push-prompt";
 import { vapidPublicKey } from "@/lib/push";
 import { InviteForm } from "@/components/invite-link";
@@ -192,6 +193,19 @@ export default async function Settings({ params, searchParams }: { params: Promi
                   <Input id="pmin" name="cashMinimum" inputMode="numeric" defaultValue={grouped(member.project.cashMinimum)} />
                 </Field>
               </div>
+            </ActionForm>
+          </Card>
+        </>
+      )}
+
+      {partner && (
+        <>
+          <SectionTitle>Presupuesto meta</SectionTitle>
+          <Card className="p-4 sm:p-5" id="meta">
+            <ActionForm action={updateBudgetTarget.bind(null, projectId)} submitLabel="Guardar meta" variant="secondary" resetOnOk={false}>
+              <Field label="Presupuesto meta de todo el proyecto" htmlFor="pmeta" hint="Lo que esperan gastar en total. Se compara con lo gastado y lo que falta pagar de los contratos. Déjelo vacío para quitarlo.">
+                <Input id="pmeta" name="budgetTarget" inputMode="numeric" defaultValue={member.project.budgetTarget ? grouped(member.project.budgetTarget) : ""} placeholder="Ej.: 160.000.000" className="max-w-xs" />
+              </Field>
             </ActionForm>
           </Card>
         </>

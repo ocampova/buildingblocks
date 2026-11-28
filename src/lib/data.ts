@@ -55,3 +55,30 @@ export const expenseListInclude = {
   payments: { select: { amount: true, source: true, partner: { select: { id: true, color: true, user: { select: { name: true } } } } } },
   _count: { select: { attachments: true } },
 } as const;
+
+/** Contratos del proyecto con sus cuentas (contratado, adicionales, abonado, saldo). */
+export const getContracts = cache(async (projectId: string) => {
+  const { contractSummary } = await import("./contracts");
+  const contracts = await prisma.contract.findMany({
+    where: { projectId },
+    include: {
+      stage: { select: { id: true, name: true } },
+      extras: { orderBy: { date: "asc" } },
+      expenses: { select: { id: true, date: true, total: true, description: true, payments: { select: { amount: true, source: true, partner: { select: { color: true, user: { select: { name: true } } } } } } }, orderBy: { date: "asc" } },
+    },
+    orderBy: { createdAt: "asc" },
+  });
+  return contracts.map((c) => ({ ...c, summary: contractSummary(c) }));
+});
+
+/** Avance contra el presupuesto meta (null si no hay meta). */
+export async function getBudget(projectId: string) {
+  const { budgetProgress } = await import("./contracts");
+  const [project, spent, contracts] = await Promise.all([
+    prisma.project.findUnique({ where: { id: projectId }, select: { budgetTarget: true } }),
+    prisma.expense.aggregate({ where: { projectId }, _sum: { total: true } }),
+    getContracts(projectId),
+  ]);
+  if (!project?.budgetTarget) return null;
+  return budgetProgress(project.budgetTarget, spent._sum.total ?? 0, contracts.reduce((s, c) => s + c.summary.balance, 0));
+}

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { ChartColumnBig, ClipboardList, House, Plus, ReceiptText, Scale, Settings, Truck } from "lucide-react";
+import { ChartColumnBig, ClipboardList, FileSignature, House, Plus, ReceiptText, Scale, Settings, Truck } from "lucide-react";
 
 import { cx } from "./ui";
 
@@ -20,11 +20,12 @@ export function AppNav({ projectId, projectName, role, userName }: { projectId: 
     ...(money ? [{ href: `${base}/cuentas`, label: "Cuentas", icon: Scale }] : []),
     // El constructor no ve gastos ni el resumen de lo gastado
     ...(money ? [{ href: `${base}/resumen`, label: "Resumen", icon: ChartColumnBig }] : []),
+    ...(money ? [{ href: `${base}/contratos`, label: "Contratos", icon: FileSignature }] : []),
   ];
-  // En el celular, Resumen vive en el riel de la computadora y en el inicio
+  // En el celular, Resumen y Contratos viven en el riel de la computadora y en el inicio
   // El constructor tiene menos secciones: Ajustes completa la barra para que el botón quede al centro
   const tabs = money
-    ? items.filter((i) => i.label !== "Resumen")
+    ? items.filter((i) => i.label !== "Resumen" && i.label !== "Contratos")
     : [items[0], items[1], { href: `${base}/pedidos?ver=comprados`, label: "Por llegar", icon: Truck }, { href: `${base}/ajustes`, label: "Ajustes", icon: Settings }];
   const newPaths = [`${base}/gastos/nuevo`, `${base}/pedidos/nuevo`];
   const active = (i: Item) => {

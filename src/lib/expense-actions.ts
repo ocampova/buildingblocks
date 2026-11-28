@@ -2,38 +2,16 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import type { PaymentSource, Prisma, ReceiptType } from "@prisma/client";
+import type { Prisma, ReceiptType } from "@prisma/client";
 import type { ActionState } from "@/components/action-form";
 import { requireMoneyMember, requirePartner } from "./auth";
 import { prisma } from "./db";
 import { keyToDate, parseAmount, todayKey } from "./format";
-import { getPartners } from "./data";
+import { paymentsFor } from "./payments";
 import { checkCashLow } from "./push";
 
 const RECEIPTS: ReceiptType[] = ["FACTURA", "TIQUETE", "NOTA", "COMPROBANTE", "NINGUNO"];
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
-
-type PaymentInput = { amount: number; source: PaymentSource; partnerId: string | null };
-
-/** Convierte la opción de "quién pagó" en pagos. "mitad" reparte según el porcentaje de cada socio. */
-async function paymentsFor(projectId: string, payer: string, total: number): Promise<PaymentInput[] | { error: string }> {
-  if (payer === "pendiente") return [];
-  if (payer === "caja") return [{ amount: total, source: "CAJA", partnerId: null }];
-  const partners = await getPartners(projectId);
-  if (payer === "mitad") {
-    if (partners.length < 2) return { error: "Para dividir el pago se necesitan al menos dos socios." };
-    const shareTotal = partners.reduce((s, p) => s + (p.share ?? 0), 0) || partners.length;
-    const parts = partners.map((p) => ({ amount: Math.floor((total * (p.share ?? 1)) / shareTotal), source: "SOCIO" as const, partnerId: p.id }));
-    parts[0].amount += total - parts.reduce((s, p) => s + p.amount, 0);
-    return parts;
-  }
-  if (payer.startsWith("socio:")) {
-    const id = payer.slice(6);
-    if (!partners.some((p) => p.id === id)) return { error: "Elija quién pagó." };
-    return [{ amount: total, source: "SOCIO", partnerId: id }];
-  }
-  return { error: "Elija quién pagó." };
-}
 
 function parseLines(raw: FormDataEntryValue | null) {
   if (typeof raw !== "string" || !raw) return [];

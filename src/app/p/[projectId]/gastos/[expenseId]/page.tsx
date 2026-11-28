@@ -26,6 +26,7 @@ export default async function ExpenseDetail({ params, searchParams }: { params: 
       stage: true,
       lines: true,
       order: { select: { id: true, number: true, title: true } },
+      contract: { select: { id: true, contractor: true } },
       createdBy: { include: { user: { select: { name: true } } } },
       payments: { include: { partner: { include: { user: { select: { name: true } } } }, attachments: { select: { id: true, mime: true, filename: true } } }, orderBy: { date: "asc" } },
       attachments: { select: { id: true, mime: true, filename: true }, orderBy: { createdAt: "asc" } },
@@ -66,6 +67,14 @@ export default async function ExpenseDetail({ params, searchParams }: { params: 
           {e.dueDate && pending > 0 && <Badge tone="warn">Vence el {dateLabel(e.dueDate)}</Badge>}
         </div>
         {e.supplier && <p className="mt-3 text-[15px] text-ink-2">Pagado a <span className="font-semibold text-ink">{e.supplier}</span></p>}
+        {e.contract && (
+          <p className="mt-1 text-[15px] text-ink-2">
+            Abono al{" "}
+            <Link href={`/p/${projectId}/contratos/${e.contract.id}`} className="font-semibold text-brand underline">
+              contrato de {e.contract.contractor}
+            </Link>
+          </p>
+        )}
         {e.order && (
           <p className="mt-1 text-[15px] text-ink-2">
             Compra del{" "}

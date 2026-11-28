@@ -54,6 +54,9 @@ model Project {
   nextOrderNumber Int @default(1)
   /// Dónde está la obra (cantón, provincia), para buscar proveedores cercanos
   location    String?
+  /// Presupuesto meta de todo el proyecto, en colones
+  budgetTarget Int?
+  contracts   Contract[]
 }
 
 enum Role {
@@ -101,6 +104,7 @@ model Stage {
   budget    Int?
   expenses  Expense[]
   orders    Order[]
+  contracts Contract[]
 
   @@index([projectId, position])
 }
@@ -135,6 +139,9 @@ model Expense {
   /// Compra hecha a partir de un pedido de materiales
   orderId      String?
   order        Order?        @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  /// Abono a un contrato (por ejemplo, al constructor)
+  contractId   String?
+  contract     Contract?     @relation(fields: [contractId], references: [id], onDelete: SetNull)
   createdById  String
   createdBy    Member        @relation("ExpenseCreatedBy", fields: [createdById], references: [id])
   createdAt    DateTime      @default(now())
@@ -354,4 +361,36 @@ model AppSetting {
   key       String   @id
   value     String
   createdAt DateTime @default(now())
+}
+
+// ─── Contratos (constructor y otros) ────────────────────────────────────────
+
+model Contract {
+  id          String          @id @default(cuid())
+  projectId   String
+  project     Project         @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  /// Con quién: constructor, empresa o persona
+  contractor  String
+  description String
+  /// Monto contratado, en colones
+  amount      Int
+  signedAt    DateTime?       @db.Date
+  /// Etapa donde se registran los abonos por defecto
+  stageId     String?
+  stage       Stage?          @relation(fields: [stageId], references: [id], onDelete: SetNull)
+  notes       String?
+  createdAt   DateTime        @default(now())
+  extras      ContractExtra[]
+  expenses    Expense[]
+}
+
+/// Obra adicional cobrada aparte del contrato
+model ContractExtra {
+  id          String   @id @default(cuid())
+  contractId  String
+  contract    Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  date        DateTime @db.Date
+  description String
+  amount      Int
+  createdAt   DateTime @default(now())
 }

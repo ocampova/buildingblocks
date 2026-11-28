@@ -4,6 +4,8 @@ import { NettingCard } from "@/components/contribution";
 import { ExpenseRow } from "@/components/expense-row";
 import { OrderRow } from "@/components/order-bits";
 import { PushPrompt } from "@/components/push-prompt";
+import { BudgetCard } from "@/components/budget-card";
+import { getBudget } from "@/lib/data";
 import { vapidPublicKey } from "@/lib/push";
 import { ButtonLink, Card, cx, EmptyState, PayerChip, SectionTitle } from "@/components/ui";
 import { requireMember, seesPartnerAccounts } from "@/lib/auth";
@@ -87,8 +89,16 @@ export default async function Home({ params }: { params: Promise<{ projectId: st
     </Link>
   );
 
+  const budget = await getBudget(projectId);
+  const contractsCount = await prisma.contract.count({ where: { projectId } });
   const stageBlock = (
     <>
+      <section aria-label="Presupuesto meta" className="space-y-2">
+        <BudgetCard b={budget} projectId={projectId} compact />
+        <Link href={`/p/${projectId}/contratos`} className="inline-flex min-h-10 items-center gap-1 text-[14.5px] font-semibold text-brand">
+          {contractsCount ? "Contratos y abonos" : "Agregar el contrato del constructor"} <ArrowRight className="size-4" aria-hidden />
+        </Link>
+      </section>
         {stageTotals.length > 0 && (
           <section aria-label="Gastado por etapa">
             <SectionTitle

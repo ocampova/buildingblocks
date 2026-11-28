@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { ExportButton } from "@/components/export-button";
+import { BudgetCard } from "@/components/budget-card";
+import { ContractCard } from "@/components/contract-bits";
+import { getBudget, getContracts } from "@/lib/data";
 import Link from "next/link";
 import { Card, cx, EmptyState, noteBg, PageHeader, SectionTitle } from "@/components/ui";
 import { requireMoneyMember } from "@/lib/auth";
@@ -14,6 +17,7 @@ export default async function Summary({ params }: { params: Promise<{ projectId:
   // Solo socios y administración: el constructor no ve gastos
   await requireMoneyMember(projectId);
   const money = true;
+  const [budget, contracts] = await Promise.all([getBudget(projectId), getContracts(projectId)]);
   const [stages, expenses, partners] = await Promise.all([
     prisma.stage.findMany({ where: { projectId }, orderBy: { position: "asc" } }),
     prisma.expense.findMany({ where: { projectId }, select: { id: true, stageId: true, total: true, receiptType: true, dueDate: true, description: true, payments: { select: { amount: true, source: true, partnerId: true } } } }),
@@ -80,6 +84,29 @@ export default async function Summary({ params }: { params: Promise<{ projectId:
           <span className="inline-flex items-center gap-1.5"><span className="size-2.5 rounded-full bg-ink/35" aria-hidden />Gastos generales</span>
         </div>
       </Card>
+
+      <div className="mt-4">
+        <BudgetCard b={budget} projectId={projectId} />
+      </div>
+
+      <SectionTitle
+        action={
+          <Link href={`/p/${projectId}/contratos`} className="text-[14.5px] font-semibold text-brand">
+            {contracts.length ? "Ver contratos" : "Agregar contrato"}
+          </Link>
+        }
+      >
+        Contratos
+      </SectionTitle>
+      {contracts.length === 0 ? (
+        <p className="text-[14.5px] text-ink-2">Todavía no hay contratos. Cuando tengan el monto del constructor, agréguelo para ver cuánto falta pagarle.</p>
+      ) : (
+        <div className="grid gap-3 md:grid-cols-2">
+          {contracts.map((c) => (
+            <ContractCard key={c.id} projectId={projectId} c={c} />
+          ))}
+        </div>
+      )}
 
       <SectionTitle>Por etapa</SectionTitle>
       <Card>

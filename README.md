@@ -30,6 +30,11 @@ Herramienta web para el celular y la computadora que controla los gastos de una 
 - **Exportar a Excel:** botón "Descargar Excel" en Gastos, Cuentas y Resumen. Hojas: gastos (con lo que pagó cada socio), pagos, detalle de facturas, por etapa, cuentas entre socios y caja/transferencias, con totales en fórmula.
 - **Proveedores para cotizar:** en cada pedido, el mensaje de WhatsApp listo para pedir cotización, envío directo a los proveedores guardados con teléfono y búsqueda con IA en internet de ferreterías y depósitos cerca de la obra (requiere la ubicación en Ajustes › Proyecto y la clave de IA). Se guarda la última búsqueda en el pedido.
 
+## Contratos y presupuesto meta
+
+- **Contratos:** con quién, monto contratado, obras adicionales (suben el total) y abonos. Cada abono es un gasto ligado al contrato, así que entra en las cuentas entre socios, el resumen y el Excel. Se ve el saldo por pagar y el avance.
+- **Presupuesto meta** (Ajustes): se compara con lo gastado y con lo comprometido (gastado más lo que falta pagar de los contratos); avisa si lo comprometido pasa la meta.
+
 Roles: **socio** (ve y hace todo), **administración** (cotiza, compra, registra gastos y pagos, exporta, no borra), **constructor** (pide materiales, ve cotizaciones y precios, marca recibidos; no ve gastos, montos de compra, cuentas entre socios, caja ni resumen).
 
 ## Correr en local
